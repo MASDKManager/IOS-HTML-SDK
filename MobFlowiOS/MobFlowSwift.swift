@@ -30,12 +30,12 @@ struct NotificationDataManager {
         self.title = title
         self.body = body
         self.action_id = action_id
-        self.show_landing_page = (show_landing_page == "true")
-        self.landing_layout = landing_layout
         self.deeplink = deeplink
         self.show_close_button = (show_close_button == "true")
         self.image = image
         self.show_toolbar_webview = (show_toolbar_webview == "true")
+        self.show_landing_page = (show_landing_page == "true")
+        self.landing_layout = landing_layout
     }
 }
 
