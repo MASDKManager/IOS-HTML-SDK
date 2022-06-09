@@ -4,15 +4,19 @@ Pod::Spec.new do |spec|
   spec.name         = "MobFlowiOS"
   spec.version      = "1.0.0"
   spec.requires_arc = true
-  spec.summary      = "A short description of MobFlowiOS."
+  spec.summary      = "An sdk that inialize multiple library in order to run custom ad screen of MobFlowiOS."
   spec.description  = <<-DESC
-  A much much longer description of MobFlowiOS.
+  An sdk that inialize multiple library in order to run custom ad screen
+  
+  u can use it inside appdelegate.
+  
+  of MobFlowiOS.
                       DESC
-  spec.homepage     = 'https://github.com/Shaaben/MobFlowiOS'
+  spec.homepage     = 'https://github.com/MASDKManager/IOS-HTML-SDK'
   spec.license = { :type => "MIT", :file => "LICENSE" }
-  spec.author       = { "Mohamad" => "h.mohammad@smartmobiletech.org" }
+  spec.author       = { "Vishnu" => "vishnu@mobiboxsoftech.com" }
   spec.source = { 
-    :git => 'https://github.com/Shaaben/MobFlowiOS.git', 
+    :git => 'https://github.com/MASDKManager/IOS-HTML-SDK.git', 
     :tag => spec.version.to_s 
   }
   spec.framework = 'UIKit'
@@ -21,9 +25,12 @@ Pod::Spec.new do |spec|
   spec.dependency 'Firebase'
   spec.dependency 'Firebase/Analytics'
   spec.dependency 'Firebase/Messaging'
+  spec.dependency 'Branch'
+  spec.dependency 'YandexMobileMetrica/Dynamic'
+  spec.dependency 'Firebase/Crashlytics'
   spec.source_files  = "MobFlowiOS/*.{swift}"
   spec.resources = "MobFlowiOS/*.{storyboard,xib,xcassets,lproj,png}"
   spec.swift_version = '5'
-  spec.ios.deployment_target = '12.0'
+  spec.ios.deployment_target = '14.0'
 
 end
