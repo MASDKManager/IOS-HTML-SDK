@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.platform = :ios
-  spec.name         = "IOS-HTML-SDK"
+  spec.name         = "MobFlowIOS"
   spec.version      = "1.0.0"
   spec.requires_arc = true
   spec.summary      = "A short description of MobFlowiOS."
