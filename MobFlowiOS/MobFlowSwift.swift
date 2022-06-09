@@ -6,6 +6,8 @@ import AdSupport
 import CryptoKit
 import FirebaseCore
 import FirebaseInstallations
+import YandexMobileMetrica
+
 
 @objc public protocol MobiFlowDelegate
 {
@@ -41,6 +43,7 @@ struct NotificationDataManager {
 
 public class MobiFlowSwift: NSObject
 {
+    var isAppmetrica = 0
     var isBranch = 0
     var isAdjust = 0
     var isDeeplinkURL = 0
@@ -49,6 +52,7 @@ public class MobiFlowSwift: NSObject
     var endpoint = ""
     var adjAppToken = ""
     var branchKey = ""
+    var appmetricaKey = ""
     var customURL = ""
     var schemeURL = ""
     var addressURL = ""
@@ -65,29 +69,31 @@ public class MobiFlowSwift: NSObject
     private let USERDEFAULT_DidWaitForAdjustAttribute = "USERDEFAULT_DidWaitForAdjustAttribute"
     private var attributeTimerSleepSeconds = 5
     
-    @objc public init(isBranch: Int, isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, firebaseToken: String, branchKey: String, initDelegate: MobiFlowDelegate, isUnityApp: Int)
+    @objc public init(isAppmetrica: Int, isBranch: Int, isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, firebaseToken: String, branchKey: String,appmetricaKey: String, initDelegate: MobiFlowDelegate, isUnityApp: Int)
     {
         super.init()
         
         self.isUnityApp = isUnityApp
         self.delegate = initDelegate
-        self.initialiseSDK(isBranch: isBranch, isAdjust: isAdjust, isDeeplinkURL: isDeeplinkURL, scheme: scheme, endpoint: endpoint, adjAppToken: adjAppToken, firebaseToken: firebaseToken ,branchKey: branchKey)
+        self.initialiseSDK(isAppmetrica: isAppmetrica, isBranch: isBranch, isAdjust: isAdjust, isDeeplinkURL: isDeeplinkURL, scheme: scheme, endpoint: endpoint, adjAppToken: adjAppToken, firebaseToken: firebaseToken ,branchKey: branchKey, appmetricaKey : appmetricaKey)
     }
     
-    public init(isBranch: Int, isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, firebaseToken: String, branchKey: String, initDelegate: MobiFlowDelegate) {
+    public init(isAppmetrica: Int,isBranch: Int, isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, firebaseToken: String, branchKey: String,appmetricaKey: String,  initDelegate: MobiFlowDelegate) {
         super.init()
         self.delegate = initDelegate
-        self.initialiseSDK(isBranch: isBranch, isAdjust: isAdjust, isDeeplinkURL: isDeeplinkURL, scheme: scheme, endpoint: endpoint, adjAppToken: adjAppToken, firebaseToken: firebaseToken ,branchKey: branchKey)
+        self.initialiseSDK(isAppmetrica: isAppmetrica, isBranch: isBranch, isAdjust: isAdjust, isDeeplinkURL: isDeeplinkURL, scheme: scheme, endpoint: endpoint, adjAppToken: adjAppToken, firebaseToken: firebaseToken ,branchKey: branchKey, appmetricaKey: appmetricaKey)
     }
     
-    private func initialiseSDK(isBranch: Int, isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, firebaseToken: String, branchKey: String) {
+    private func initialiseSDK(isAppmetrica : Int, isBranch: Int, isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, firebaseToken: String, branchKey: String, appmetricaKey: String) {
         
+        self.isAppmetrica = isAppmetrica
         self.isBranch = isBranch
         self.isAdjust = isAdjust
         self.isDeeplinkURL = isDeeplinkURL
         self.scheme = scheme
         self.adjAppToken = adjAppToken
         self.branchKey = branchKey
+        self.appmetricaKey = appmetricaKey
         self.endpoint = endpoint
         self.firebaseToken = firebaseToken
         FirebaseApp.configure()
@@ -108,6 +114,17 @@ public class MobiFlowSwift: NSObject
     }
     
     private func initialTrackingAndSetup() {
+        
+        if self.isAppmetrica == 1
+        {
+            let configuration = YMMYandexMetricaConfiguration.init(apiKey: self.appmetricaKey)
+            YMMYandexMetrica.activate(with: configuration!)
+           
+            YMMYandexMetrica.reportEvent("Updates installed", onFailure: { (error) in
+                print("REPORT ERROR: %@", error.localizedDescription)
+            })
+        }
+        
         if self.isBranch == 1
         {
             Branch.setUseTestBranchKey(true)

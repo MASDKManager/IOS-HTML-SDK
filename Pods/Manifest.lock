@@ -116,6 +116,12 @@ PODS:
   - nanopb/encode (2.30908.0)
   - PromisesObjC (2.1.0)
   - ReachabilitySwift (5.0.0)
+  - YandexMobileMetrica/Dynamic (4.2.0):
+    - YandexMobileMetrica/Dynamic/Core (= 4.2.0)
+    - YandexMobileMetrica/Dynamic/Crashes (= 4.2.0)
+  - YandexMobileMetrica/Dynamic/Core (4.2.0)
+  - YandexMobileMetrica/Dynamic/Crashes (4.2.0):
+    - YandexMobileMetrica/Dynamic/Core
 
 DEPENDENCIES:
   - Adjust
@@ -125,6 +131,7 @@ DEPENDENCIES:
   - Firebase/Crashlytics
   - Firebase/Messaging
   - ReachabilitySwift
+  - YandexMobileMetrica/Dynamic (= 4.2.0)
 
 SPEC REPOS:
   trunk:
@@ -143,6 +150,7 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - ReachabilitySwift
+    - YandexMobileMetrica
 
 SPEC CHECKSUMS:
   Adjust: 5cab100ac05eebde8141b48a2acffd6b5ce0564b
@@ -160,7 +168,8 @@ SPEC CHECKSUMS:
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
+  YandexMobileMetrica: f5f9c605eaaba33ff6ab2b6bc3259035ca60ed87
 
-PODFILE CHECKSUM: 4146c45b6c2b5d3e6d43e298c3f4e5f19c8503f0
+PODFILE CHECKSUM: d4569f14d01b6c9eb2768ae14605c2a95738e74b
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
