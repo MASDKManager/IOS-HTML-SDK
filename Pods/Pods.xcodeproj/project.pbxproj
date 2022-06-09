@@ -1729,7 +1729,7 @@
 		7F13894FCC9AB99D164CB2E77710150D /* BranchCreditHistoryRequest.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BranchCreditHistoryRequest.h; path = "Branch-SDK/BranchCreditHistoryRequest.h"; sourceTree = "<group>"; };
 		7F7C602F94C5F28DA59B2A90B628251B /* FirebaseCore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FirebaseCore.release.xcconfig; sourceTree = "<group>"; };
 		7FE94DF484A9B69B1C9857203787D828 /* YMMVersion.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = YMMVersion.h; path = "dynamic/YandexMobileMetrica.xcframework/tvos-arm64/YandexMobileMetrica.framework/Headers/YMMVersion.h"; sourceTree = "<group>"; };
-		7FF5C62DF1E2D492F272FD7D2A1EF4A3 /* Adjust */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Adjust; path = Adjust.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7FF5C62DF1E2D492F272FD7D2A1EF4A3 /* Adjust.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Adjust.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8058B2C182198807A49BE047399004CB /* Pods-MobFlowiOS-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MobFlowiOS-umbrella.h"; sourceTree = "<group>"; };
 		8064C0A11B56804476A98D7D0036E435 /* BranchInstallRequest.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BranchInstallRequest.m; path = "Branch-SDK/BranchInstallRequest.m"; sourceTree = "<group>"; };
 		816B99A6EBE6E1F612A7B95D0E56613B /* GULSceneDelegateSwizzler_Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GULSceneDelegateSwizzler_Private.h; path = GoogleUtilities/AppDelegateSwizzler/Internal/GULSceneDelegateSwizzler_Private.h; sourceTree = "<group>"; };
@@ -2867,7 +2867,7 @@
 		975D4204EC2B36F9027BDD837F320B2E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7FF5C62DF1E2D492F272FD7D2A1EF4A3 /* Adjust */,
+				7FF5C62DF1E2D492F272FD7D2A1EF4A3 /* Adjust.framework */,
 				50466679031AFFDEC718950031906D26 /* Branch */,
 				E2B63D462DB7F827C4B11FD51E4F8E2D /* FirebaseCore */,
 				8CC9178C366942FD6FF6A115604EAD58 /* FirebaseCoreDiagnostics */,
@@ -4542,7 +4542,7 @@
 			);
 			name = Adjust;
 			productName = Adjust;
-			productReference = 7FF5C62DF1E2D492F272FD7D2A1EF4A3 /* Adjust */;
+			productReference = 7FF5C62DF1E2D492F272FD7D2A1EF4A3 /* Adjust.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		87803597EB3F20FC46472B85392EC4FD /* FirebaseInstallations */ = {
@@ -5560,7 +5560,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/Adjust/Adjust-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/Adjust/Adjust-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6536,7 +6536,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/Adjust/Adjust-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/Adjust/Adjust-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
