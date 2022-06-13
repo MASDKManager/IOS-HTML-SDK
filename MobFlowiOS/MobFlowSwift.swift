@@ -6,6 +6,7 @@ import AdSupport
 import CryptoKit
 import FirebaseCore
 import FirebaseInstallations
+import FirebaseAnalytics
 import YandexMobileMetrica
 
 
@@ -53,11 +54,13 @@ public class MobiFlowSwift: NSObject
     var adjAppToken = ""
     var branchKey = ""
     var appmetricaKey = ""
+    var referrerURL = ""
     var customURL = ""
     var schemeURL = ""
     var addressURL = ""
     var faid = ""
     var firebaseToken = ""
+    var AppMetricaDeviceID = ""
     public var delegate : MobiFlowDelegate? = nil
     var counter = 0
     var timer = Timer()
@@ -98,17 +101,25 @@ public class MobiFlowSwift: NSObject
         self.firebaseToken = firebaseToken
         FirebaseApp.configure()
         
-        Installations.installations().installationID { instanceID, error in
-            
-            self.faid = instanceID ?? ""
-            
-            Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
-            self.callFirebaseCallBack()
-            
-            //resumes the delayed adjust install session
-            Adjust.sendFirstPackages()
-            
-        }
+        self.faid = Analytics.appInstanceID() ?? ""
+        
+        Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
+        self.callFirebaseCallBack()
+        
+        //resumes the delayed adjust install session
+        Adjust.sendFirstPackages()
+        
+//        Installations.installations().installationID { instanceID, error in
+//
+//            self.faid = instanceID ?? ""
+//
+//            Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
+//            self.callFirebaseCallBack()
+//
+//            //resumes the delayed adjust install session
+//            Adjust.sendFirstPackages()
+//
+//        }
         
         self.initialTrackingAndSetup()
     }
@@ -120,9 +131,13 @@ public class MobiFlowSwift: NSObject
             let configuration = YMMYandexMetricaConfiguration.init(apiKey: self.appmetricaKey)
             YMMYandexMetrica.activate(with: configuration!)
            
-            YMMYandexMetrica.reportEvent("Updates installed", onFailure: { (error) in
-                print("REPORT ERROR: %@", error.localizedDescription)
-            })
+//            YMMYandexMetrica.reportEvent("Updates installed", onFailure: { (error) in
+//                print("REPORT ERROR: %@", error.localizedDescription)
+//            })
+            
+            YMMYandexMetrica.requestAppMetricaDeviceID(withCompletionQueue: .main) { [unowned self] id, error in
+                self.AppMetricaDeviceID = id ?? ""
+            }
         }
         
         if self.isBranch == 1
@@ -360,6 +375,33 @@ public class MobiFlowSwift: NSObject
         return "\(intTimeStamp)"
     }
     
+    func createParamsURL()
+    {
+        var components = URLComponents()
+         
+        let adjustAttributes = fetchAdjustAttributes()
+        let encodedAdjustAttributes = adjustAttributes.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
+        let encodedReferrerURL = self.referrerURL.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
+         
+        let gpsadid = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+
+        components.queryItems = [
+            URLQueryItem(name: "val1", value: generateUserUUID()),
+            URLQueryItem(name: "val2", value: Bundle.main.bundleIdentifier ?? ""),
+            URLQueryItem(name: "val3", value: self.faid),
+            URLQueryItem(name: "val4", value: encodedAdjustAttributes ),
+            URLQueryItem(name: "val5", value: gpsadid),
+            URLQueryItem(name: "val6", value: encodedReferrerURL),
+            URLQueryItem(name: "val7", value: self.AppMetricaDeviceID)
+        ]
+        
+        let customString =  self.endpoint  + (components.string ?? "")
+        
+         //print("generated custom string : \(customString)")
+        self.customURL = customString
+  
+    }
+    
     func createCustomURL()
     {
         let packageName = Bundle.main.bundleIdentifier ?? ""
@@ -585,6 +627,9 @@ extension MobiFlowSwift: UIApplicationDelegate
         {
             return Branch.getInstance(self.branchKey).continue(userActivity)
         }
+        
+        self.referrerURL = userActivity.referrerURL?.absoluteString ?? ""
+      
         return false
     }
 }
@@ -666,7 +711,8 @@ extension MobiFlowSwift: WebViewControllerDelegate
                 {
                     if self.customURL.isEmpty
                     {
-                        (self.isDeeplinkURL == 1) ? self.creteCustomURLWithDeeplinkParam() : self.createCustomURL()
+                        self.createParamsURL()
+                        //(self.isDeeplinkURL == 1) ? self.creteCustomURLWithDeeplinkParam() : self.createCustomURL()
                     }
                     let webView = self.initWebViewURL()
                     self.present(webView: webView)
@@ -688,3 +734,4 @@ extension MobiFlowSwift: WebViewControllerDelegate
         }
     }
 }
+
