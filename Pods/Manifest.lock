@@ -1,8 +1,8 @@
 PODS:
-  - Adjust (4.29.5):
-    - Adjust/Core (= 4.29.5)
-  - Adjust/Core (4.29.5)
-  - Branch (1.39.4)
+  - Adjust (4.30.0):
+    - Adjust/Core (= 4.30.0)
+  - Adjust/Core (4.30.0)
+  - Branch (1.42.0)
   - Firebase (9.1.0):
     - Firebase/Core (= 9.1.0)
   - Firebase/Core (9.1.0):
@@ -149,8 +149,8 @@ SPEC REPOS:
     - YandexMobileMetrica
 
 SPEC CHECKSUMS:
-  Adjust: 5cab100ac05eebde8141b48a2acffd6b5ce0564b
-  Branch: d21c40c47b5c15c6ab709cdf7d965a50059e0546
+  Adjust: 6ed5493e91e9a77f6515d94f640bb72506a06b9d
+  Branch: a6f1d597dc7c027360f386d05e8d109043b207d8
   Firebase: 91c243d75573ac6e7c9735ec859b72bffb61347d
   FirebaseAnalytics: bf11064790ac96804df1df9ddc0ae45af950d9fc
   FirebaseCore: b7bfc258e996eada23b3666bd6b9a22ca092acb8

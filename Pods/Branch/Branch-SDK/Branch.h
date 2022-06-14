@@ -33,6 +33,7 @@
 #import "BNCInitSessionResponse.h"
 #import "UIViewController+Branch.h"
 #import "BranchScene.h"
+#import "BranchPluginSupport.h"
 
 #if !TARGET_OS_TV
 // tvOS does not support these features
@@ -251,28 +252,6 @@ typedef NS_ENUM(NSUInteger, BranchCreditHistoryOrder) {
 + (nullable NSString *) branchKey;
 
 + (BOOL)branchKeyIsSet;
-
-/**
- * By default, the Branch SDK will include the device fingerprint ID as metadata in Crashlytics
- * reports. This can help locate problems by correlating API traffic with a crash. To
- * prevent reporting the device fingerprint ID to Crashlytics, call
- * [Branch setEnableFingerPrintIDInCrashlyticsReports:NO] before
- * [Branch getInstance] or [Branch getTestInstance].
- *
- * This method is thread-safe.
- *
- * @param enabled Set to NO to disable reporting of the device fingerprint ID to Crashlytics.
- */
-+ (void)setEnableFingerprintIDInCrashlyticsReports:(BOOL)enabled;
-
-/**
- * Determine whether device fingerprint ID reporting to Crashlytics is enabled.
- *
- * This method is thread-safe.
- *
- * @return YES if device fingerprint ID reporting to Crashlytics is enabled. NO otherwise.
- */
-+ (BOOL)enableFingerprintIDInCrashlyticsReports;
 
 /// TODO: Add documentation.
 @property (weak, nullable) NSObject<BranchDelegate>* delegate;
@@ -680,12 +659,15 @@ typedef NS_ENUM(NSUInteger, BranchCreditHistoryOrder) {
  Checks the pasteboard (clipboard) for a Branch Link on App Install.
  If found, the Branch Link is used to provide deferred deeplink data.
  
+ This should be called before initSession
+ 
  Note, this may display a toast message to the end user.
  */
 - (void)checkPasteboardOnInstall;
 
 /**
  Let's client know if the Branch SDK will trigger a pasteboard toast to the end user.
+ 
  All of the following conditions must be true.
  
  1. Developer called checkPastboardOnInstall before initSession
@@ -843,6 +825,18 @@ typedef NS_ENUM(NSUInteger, BranchCreditHistoryOrder) {
 ///Returns the current tracking state.
 + (BOOL) trackingDisabled;
 
+/*
+ 
+ Sets the time window for which referrer_graid is valid starting from now.
+ After validity window is over, its cleared from settings and will not be sent
+ with requests anymore.
+ 
+ Default time interval is 30 days (2,592,000 seconds).
+ 
+ @param validityWindow -(NSTimeInterval) number of seconds for which referrer_gbraid will be valid starting from now.
+ */
++ (void) setReferrerGbraidValidityWindow:(NSTimeInterval) validityWindow;
+
 #pragma mark - Session Item methods
 
 ///--------------------
@@ -937,135 +931,27 @@ typedef NS_ENUM(NSUInteger, BranchCreditHistoryOrder) {
 /// @name Credits
 ///--------------
 
-/**
- Loads credit totals from the server.
- 
- This method should only be invoked after initSession completes, either within the callback or after a delay.
- If it is invoked before, then we will silently initialize the SDK before the callback has been set, in order to carry out this method's required task.
- As a result, you may experience issues where the initSession callback does not fire. Again, the solution to this issue is to only invoke this method after you have invoked initSession.
+- (void)loadRewardsWithCallback:(nullable callbackWithStatus)callback __deprecated_msg("Referral feature has been deprecated. This is no-op.");
 
- @param callback The callback that is called once the request has completed.
- */
-- (void)loadRewardsWithCallback:(nullable callbackWithStatus)callback;
+- (void)redeemRewards:(NSInteger)count __deprecated_msg("Referral feature has been deprecated. This is no-op.");;
 
-/**
- Redeem credits from the default bucket.
+- (void)redeemRewards:(NSInteger)count callback:(nullable callbackWithStatus)callback __deprecated_msg("Referral feature has been deprecated. This is no-op.");
 
- This method should only be invoked after initSession completes, either within the callback or after a delay.
- If it is invoked before, then we will silently initialize the SDK before the callback has been set, in order to carry out this method's required task.
- As a result, you may experience issues where the initSession callback does not fire. Again, the solution to this issue is to only invoke this method after you have invoked initSession.
- 
- @param count The number of credits to redeem.
- @warning You must `loadRewardsWithCallback:` before calling `redeemRewards`.
- */
-- (void)redeemRewards:(NSInteger)count;
+- (void)redeemRewards:(NSInteger)count forBucket:(nullable NSString *)bucket __deprecated_msg("Referral feature has been deprecated. This is no-op.");
 
-/**
- Redeem credits from the default bucket.
+- (void)redeemRewards:(NSInteger)count forBucket:(nullable NSString *)bucket callback:(nullable callbackWithStatus)callback __deprecated_msg("Referral feature has been deprecated. This is no-op.");
 
- This method should only be invoked after initSession completes, either within the callback or after a delay.
- If it is invoked before, then we will silently initialize the SDK before the callback has been set, in order to carry out this method's required task.
- As a result, you may experience issues where the initSession callback does not fire. Again, the solution to this issue is to only invoke this method after you have invoked initSession.
- 
- @param count The number of credits to redeem.
- @param callback The callback that is called once the request has completed.
- @warning You must `loadRewardsWithCallback:` before calling `redeemRewards`.
- */
-- (void)redeemRewards:(NSInteger)count callback:(nullable callbackWithStatus)callback;
+- (NSInteger)getCredits __deprecated_msg("Referral feature has been deprecated. This is no-op.");
 
-/**
- Redeem credits from the specified bucket.
+- (NSInteger)getCreditsForBucket:(NSString *)bucket __deprecated_msg("Referral feature has been deprecated. This is no-op.");
 
- This method should only be invoked after initSession completes, either within the callback or after a delay.
- If it is invoked before, then we will silently initialize the SDK before the callback has been set, in order to carry out this method's required task.
- As a result, you may experience issues where the initSession callback does not fire. Again, the solution to this issue is to only invoke this method after you have invoked initSession.
- 
- @param count The number of credits to redeem.
- @param bucket The bucket to redeem credits from.
- @warning You must `loadRewardsWithCallback:` before calling `redeemRewards`.
- */
-- (void)redeemRewards:(NSInteger)count forBucket:(nullable NSString *)bucket;
+- (void)getCreditHistoryWithCallback:(nullable callbackWithList)callback __deprecated_msg("Referral feature has been deprecated. This is no-op.");
 
-/**
- Redeem credits from the specified bucket.
- 
- This method should only be invoked after initSession completes, either within the callback or after a delay.
- If it is invoked before, then we will silently initialize the SDK before the callback has been set, in order to carry out this method's required task.
- As a result, you may experience issues where the initSession callback does not fire. Again, the solution to this issue is to only invoke this method after you have invoked initSession.
- 
- @param count The number of credits to redeem.
- @param bucket The bucket to redeem credits from.
- @param callback The callback that is called once the request has completed.
- @warning You must `loadRewardsWithCallback:` before calling `redeemRewards`.
- */
-- (void)redeemRewards:(NSInteger)count forBucket:(nullable NSString *)bucket callback:(nullable callbackWithStatus)callback;
+- (void)getCreditHistoryForBucket:(nullable NSString *)bucket andCallback:(nullable callbackWithList)callback __deprecated_msg("Referral feature has been deprecated. This is no-op.");
 
-/**
- Get the local credit balance for the default bucket.
+- (void)getCreditHistoryAfter:(nullable NSString *)creditTransactionId number:(NSInteger)length order:(BranchCreditHistoryOrder)order andCallback:(nullable callbackWithList)callback __deprecated_msg("Referral feature has been deprecated. This is no-op.");
 
- @warning You must `loadRewardsWithCallback:` before calling `getCredits`. This method does not make a request for the balance.
- */
-- (NSInteger)getCredits;
-
-/**
- Get the local credit balance for the specified bucket.
-
- @param bucket The bucket to get credits balance from.
- @warning You must `loadRewardsWithCallback:` before calling `getCredits`. This method does not make a request for the balance.
- */
-- (NSInteger)getCreditsForBucket:(NSString *)bucket;
-
-/**
- Loads the last 100 credit transaction history items for the default bucket.
-
- This method should only be invoked after initSession completes, either within the callback or after a delay.
- If it is invoked before, then we will silently initialize the SDK before the callback has been set, in order to carry out this method's required task.
- As a result, you may experience issues where the initSession callback does not fire. Again, the solution to this issue is to only invoke this method after you have invoked initSession.
- 
- @param callback The callback to call with the list of transactions.
- */
-- (void)getCreditHistoryWithCallback:(nullable callbackWithList)callback;
-
-/**
- Loads the last 100 credit transaction history items for the specified bucket.
-
- This method should only be invoked after initSession completes, either within the callback or after a delay.
- If it is invoked before, then we will silently initialize the SDK before the callback has been set, in order to carry out this method's required task.
- As a result, you may experience issues where the initSession callback does not fire. Again, the solution to this issue is to only invoke this method after you have invoked initSession.
- 
- @param bucket The bucket to get transaction history for.
- @param callback The callback to call with the list of transactions.
- */
-- (void)getCreditHistoryForBucket:(nullable NSString *)bucket andCallback:(nullable callbackWithList)callback;
-
-/**
- Loads the last n credit transaction history items after the specified transaction ID for the default.
-
- This method should only be invoked after initSession completes, either within the callback or after a delay.
- If it is invoked before, then we will silently initialize the SDK before the callback has been set, in order to carry out this method's required task.
- As a result, you may experience issues where the initSession callback does not fire. Again, the solution to this issue is to only invoke this method after you have invoked initSession.
- 
- @param creditTransactionId The ID of the transaction to start from.
- @param length The number of transactions to pull.
- @param order The direction to order transactions in the callback list. Least recent first means oldest items will be in the front of the response array, most recent means newest items will be front.
- @param callback The callback to call with the list of transactions.
- */
-- (void)getCreditHistoryAfter:(nullable NSString *)creditTransactionId number:(NSInteger)length order:(BranchCreditHistoryOrder)order andCallback:(nullable callbackWithList)callback;
-
-/**
- Loads the last n credit transaction history items after the specified transaction ID for the specified bucket.
-
- This method should only be invoked after initSession completes, either within the callback or after a delay.
- If it is invoked before, then we will silently initialize the SDK before the callback has been set, in order to carry out this method's required task.
- As a result, you may experience issues where the initSession callback does not fire. Again, the solution to this issue is to only invoke this method after you have invoked initSession.
- 
- @param bucket The bucket to get transaction history for.
- @param creditTransactionId The ID of the transaction to start from.
- @param length The number of transactions to pull.
- @param order The direction to order transactions in the callback list. Least recent first means oldest items will be in the front of the response array, most recent means newest items will be front.
- @param callback The callback to call with the list of transactions.
- */
-- (void)getCreditHistoryForBucket:(nullable NSString *)bucket after:(nullable NSString *)creditTransactionId number:(NSInteger)length order:(BranchCreditHistoryOrder)order andCallback:(nullable callbackWithList)callback;
+- (void)getCreditHistoryForBucket:(nullable NSString *)bucket after:(nullable NSString *)creditTransactionId number:(NSInteger)length order:(BranchCreditHistoryOrder)order andCallback:(nullable callbackWithList)callback __deprecated_msg("Referral feature has been deprecated. This is no-op.");
 
 #pragma mark - Action methods
 
@@ -1417,6 +1303,19 @@ typedef NS_ENUM(NSUInteger, BranchCreditHistoryOrder) {
  @warning This can fail if the alias is already taken.
  */
 - (NSString *)getLongURLWithParams:(nullable NSDictionary *)params andChannel:(nullable NSString *)channel andTags:(nullable NSArray *)tags andFeature:(nullable NSString *)feature andStage:(nullable NSString *)stage andAlias:(nullable NSString *)alias;
+
+/**
+ Get a long app.link url with specified params, tags, feature, stage, and alias. The usage type will default to unlimited.
+
+ @param params Dictionary of parameters to include in the link.
+ @param channel The channel for the link. Examples could be Facebook, Twitter, SMS, etc, depending on where it will be shared.
+ @param tags An array of tags to associate with this link, useful for tracking.
+ @param feature The feature this is utilizing. Examples could be Sharing, Referring, Inviting, etc.
+ @param stage The stage used for the generated link, indicating what part of a funnel the user is in.
+ @param alias The alias for a link.
+ @warning This can fail if the alias is already taken.
+ */
+- (NSString *)getLongAppLinkURLWithParams:(NSDictionary *)params andChannel:(nullable NSString *)channel andTags:(NSArray *)tags andFeature:(NSString *)feature andStage:(NSString *)stage andAlias:(NSString *)alias;
 
 #pragma mark - Short Url Async methods
 

@@ -106,7 +106,7 @@ BranchStandardEvent BranchStandardEventOptOut                 = @"OPT_OUT";
     [coder encodeObject:self.eventDictionary forKey:@"eventDictionary"];
 }
 
-+ (BOOL) supportsSecureCoding {
++ (BOOL)supportsSecureCoding {
     return YES;
 }
 
@@ -115,7 +115,7 @@ BranchStandardEvent BranchStandardEventOptOut                 = @"OPT_OUT";
 #pragma mark - BranchEvent
 
 @interface BranchEvent ()
-@property (nonatomic, strong) NSString*  eventName;
+@property (nonatomic, copy) NSString*  eventName;
 @end
 
 @implementation BranchEvent : NSObject
@@ -264,7 +264,7 @@ BranchStandardEvent BranchStandardEventOptOut                 = @"OPT_OUT";
 }
 
 - (BranchEventRequest *)buildRequestWithEventDictionary:(NSDictionary *)eventDictionary {
-    BNCPreferenceHelper *preferenceHelper = [BNCPreferenceHelper preferenceHelper];
+    BNCPreferenceHelper *preferenceHelper = [BNCPreferenceHelper sharedInstance];
     
     NSString *serverURL =
     ([self.class.standardEvents containsObject:self.eventName])

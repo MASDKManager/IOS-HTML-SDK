@@ -16,13 +16,13 @@
 @interface BranchShortUrlSyncRequest ()
 
 @property (strong, nonatomic) NSArray *tags;
-@property (strong, nonatomic) NSString *alias;
+@property (copy, nonatomic) NSString *alias;
 @property (assign, nonatomic) BranchLinkType type;
 @property (assign, nonatomic) NSInteger matchDuration;
-@property (strong, nonatomic) NSString *channel;
-@property (strong, nonatomic) NSString *feature;
-@property (strong, nonatomic) NSString *stage;
-@property (strong, nonatomic) NSString *campaign;
+@property (copy, nonatomic) NSString *channel;
+@property (copy, nonatomic) NSString *feature;
+@property (copy, nonatomic) NSString *stage;
+@property (copy, nonatomic) NSString *campaign;
 @property (strong, nonatomic) NSDictionary *params;
 @property (strong, nonatomic) BNCLinkCache *linkCache;
 @property (strong, nonatomic) BNCLinkData *linkData;
@@ -52,10 +52,10 @@
 - (BNCServerResponse *)makeRequest:(BNCServerInterface *)serverInterface key:(NSString *)key {
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:self.linkData.data];
     
-    BNCPreferenceHelper *preferenceHelper = [BNCPreferenceHelper preferenceHelper];
+    BNCPreferenceHelper *preferenceHelper = [BNCPreferenceHelper sharedInstance];
     if (!preferenceHelper.trackingDisabled) {
-        params[BRANCH_REQUEST_KEY_DEVICE_FINGERPRINT_ID] = preferenceHelper.deviceFingerprintID;
-        params[BRANCH_REQUEST_KEY_BRANCH_IDENTITY] = preferenceHelper.identityID;
+        params[BRANCH_REQUEST_KEY_RANDOMIZED_DEVICE_TOKEN] = preferenceHelper.randomizedDeviceToken;
+        params[BRANCH_REQUEST_KEY_RANDOMIZED_BUNDLE_TOKEN] = preferenceHelper.randomizedBundleToken;
         params[BRANCH_REQUEST_KEY_SESSION_ID] = preferenceHelper.sessionID;
     }
 
@@ -69,7 +69,7 @@
         BNCLogWarning([NSString stringWithFormat:@"Short link creation received HTTP status code %@. Using long link instead.",
             response.statusCode]);
         NSString *failedUrl = nil;
-        NSString *userUrl = [BNCPreferenceHelper preferenceHelper].userUrl;
+        NSString *userUrl = [BNCPreferenceHelper sharedInstance].userUrl;
         if (userUrl) {
             failedUrl = [self createLongUrlForUserUrl:userUrl];
         }
@@ -93,7 +93,7 @@
 }
 
 + (NSString *)createLinkFromBranchKey:(NSString *)branchKey tags:(NSArray *)tags alias:(NSString *)alias type:(BranchLinkType)type matchDuration:(NSInteger)duration channel:(NSString *)channel feature:(NSString *)feature stage:(NSString *)stage params:(NSDictionary *)params {
-    BNCPreferenceHelper *preferenceHelper = [BNCPreferenceHelper preferenceHelper];
+    BNCPreferenceHelper *preferenceHelper = [BNCPreferenceHelper sharedInstance];
     NSMutableString *baseUrl;
     
     if (preferenceHelper.userUrl)
@@ -114,7 +114,7 @@
                                  stage:(NSString *)stage
                                 params:(NSDictionary *)params {
 
-    baseUrl = [[BNCPreferenceHelper preferenceHelper] sanitizedMutableBaseURL:baseUrl];
+    baseUrl = [[BNCPreferenceHelper sharedInstance] sanitizedMutableBaseURL:baseUrl];
     for (NSString *tag in tags) {
         [baseUrl appendFormat:@"tags=%@&", [BNCEncodingUtils stringByPercentEncodingStringForQuery:tag]];
     }

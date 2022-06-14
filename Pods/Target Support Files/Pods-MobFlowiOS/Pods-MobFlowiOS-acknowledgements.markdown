@@ -3,7 +3,7 @@ This application makes use of the following third party libraries:
 
 ## Adjust
 
-Copyright (c) 2012-2017 adjust GmbH, 
+Copyright (c) 2012-Present Adjust GmbH, 
 http://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining

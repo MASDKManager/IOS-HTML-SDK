@@ -7,6 +7,7 @@
 //
 
 #import "BranchUniversalObject.h"
+#import <LinkPresentation/LinkPresentation.h>
 @class BranchShareLink;
 
 @protocol BranchShareLinkDelegate <NSObject>
@@ -55,7 +56,7 @@ A delegate on the BranchShareLink can further configure the share experience. Fo
 parameters can be changed depending on the activity that the user selects.
 */
 
-@interface BranchShareLink : NSObject
+@interface BranchShareLink : NSObject <UIActivityItemSource>
 
 /**
 Creates a BranchShareLink object.
@@ -84,16 +85,19 @@ Presents a UIActivityViewController that shares the Branch link.
                                                   anchor:(id _Nullable)anchorViewOrButtonItem;
 
 ///The title for the share sheet.
-@property (nonatomic, strong) NSString*_Nullable title;
+@property (nonatomic, copy) NSString*_Nullable title;
 
 // Override the default placeholder URL
 // iOS 13+ fetches a preview header icon, text and domain name from this URL.
 // By default, we use the Branch bnc.lt link, but if you wish more control override it here.
 @property (nonatomic, strong, nullable) NSURL *placeholderURL;
 
+// iOS 13+ : LinkPresentation metadata for the preview header.
+@property (nonatomic, strong, nullable) LPLinkMetadata *lpMetaData API_AVAILABLE(ios(13.0));
+
 ///Share text for the item.  This is not the text in the iOS 13+ preview header.
 ///This text can be changed later when the `branchShareSheetWillShare:` delegate method is called.
-@property (nonatomic, strong) NSString*_Nullable shareText;
+@property (nonatomic, copy) NSString*_Nullable shareText;
 
 ///An additional, user defined, non-typed, object to be shared.
 ///This object can be changed later when the `branchShareSheetWillShare:` delegate method is called.
@@ -101,13 +105,13 @@ Presents a UIActivityViewController that shares the Branch link.
 
 ///Sets an email subject line for the share activity. If the Branch link property already has an
 ///email subject, that attribute takes precedence over this field.
-@property (nonatomic, strong) NSString*_Nullable emailSubject;
+@property (nonatomic, copy) NSString*_Nullable emailSubject;
 
 ///The resulting Branch URL that was shared.
 @property (nonatomic, strong, readonly) NSURL*_Nullable shareURL;
 
 ///The activity type that the user chose.
-@property (nonatomic, strong, readonly) NSString*_Nullable activityType;
+@property (nonatomic, readonly, copy) NSString*_Nullable activityType;
 
 ///Extra server parameters that should be included with the link data.
 @property (nonatomic, strong) NSMutableDictionary*_Nullable serverParameters;
@@ -120,4 +124,18 @@ Presents a UIActivityViewController that shares the Branch link.
 
 ///The delegate. See 'BranchShareLinkDelegate' above for a description.
 @property (nonatomic, weak)   id<BranchShareLinkDelegate>_Nullable delegate;
+
+@property void (^ _Nullable completion)(NSString * _Nullable activityType, BOOL completed);
+@property void (^ _Nullable completionError)(NSString * _Nullable activityType, BOOL completed, NSError*_Nullable error);
+
+/**
+Creates and attaches an LPLinkMetadata using the provided title and icon. This method is only available on iOS 13.0 or greater.
+
+@param title           The string that will appear in the share sheet preview,
+@param icon             The image used for the share sheet preview icon.
+*/
+
+- (void) addLPLinkMetadata:(NSString *_Nullable)title
+                      icon:(UIImage *_Nullable)icon API_AVAILABLE(ios(13.0));
+
 @end

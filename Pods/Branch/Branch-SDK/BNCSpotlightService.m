@@ -33,7 +33,7 @@ static NSString* const kDomainIdentifier = @"io.branch.sdk.spotlight";
     dispatch_queue_t    _workQueue;
 }
 @property (strong, nonatomic) NSMutableDictionary *userInfo;
-@property (strong, readonly) dispatch_queue_t workQueue;
+@property (strong, readonly, nonatomic) dispatch_queue_t workQueue;
 @end
 
 #pragma mark - BNCSpotlightService
@@ -55,7 +55,7 @@ static NSString* const kDomainIdentifier = @"io.branch.sdk.spotlight";
     if (!universalObject.title) {
         NSError *error = [NSError branchErrorWithCode:BNCSpotlightTitleError];
         if (completion) {
-            completion(universalObject,[BNCPreferenceHelper preferenceHelper].userUrl, error);
+            completion(universalObject,[BNCPreferenceHelper sharedInstance].userUrl, error);
         }
         return;
     }
@@ -140,7 +140,7 @@ static NSString* const kDomainIdentifier = @"io.branch.sdk.spotlight";
             andCallback:^(NSString * _Nullable url, NSError * _Nullable error) {
                 __strong __typeof(self) strongSelf = weakSelf;
                 if (!strongSelf || !url || error) {
-                    if (completion) completion([BNCPreferenceHelper preferenceHelper].userUrl, error);
+                    if (completion) completion([BNCPreferenceHelper sharedInstance].userUrl, error);
                     return;
                 }
             id attributes =

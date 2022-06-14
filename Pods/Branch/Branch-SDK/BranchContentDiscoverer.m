@@ -19,7 +19,7 @@
 @interface BranchContentDiscoverer ()
 @property (nonatomic, strong) NSString *lastViewControllerName;
 @property (nonatomic, strong) NSTimer *contentDiscoveryTimer;
-@property (nonatomic) NSInteger numOfViewsDiscovered;
+@property (nonatomic, assign) NSInteger numOfViewsDiscovered;
 @end
 
 
@@ -123,7 +123,7 @@
                     [contentEventObj setObject:contentDataArray forKey:BRANCH_CONTENT_DATA_KEY];
                 }
                 
-                [[BNCPreferenceHelper preferenceHelper] saveBranchAnalyticsData:contentEventObj];
+                [[BNCPreferenceHelper sharedInstance] saveBranchAnalyticsData:contentEventObj];
             }
         }
     }
