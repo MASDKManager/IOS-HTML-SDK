@@ -100,7 +100,7 @@ public class MobiFlowSwift: NSObject
         self.endpoint = endpoint
         self.firebaseToken = firebaseToken
         FirebaseApp.configure()
-        
+         
         self.faid = Analytics.appInstanceID() ?? ""
         
         Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
@@ -629,7 +629,7 @@ extension MobiFlowSwift: UIApplicationDelegate
         }
         
         self.referrerURL = userActivity.referrerURL?.absoluteString ?? ""
-      
+
         return false
     }
 }
