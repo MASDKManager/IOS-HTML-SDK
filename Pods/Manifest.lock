@@ -122,7 +122,6 @@ DEPENDENCIES:
   - Adjust
   - Branch
   - Firebase
-  - FirebaseAnalytics
   - FirebaseCrashlytics
   - FirebaseMessaging
   - ReachabilitySwift
@@ -167,6 +166,6 @@ SPEC CHECKSUMS:
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   YandexMobileMetrica: f5f9c605eaaba33ff6ab2b6bc3259035ca60ed87
 
-PODFILE CHECKSUM: 2acf9c49b72c03d437baaca1f5a9bf7dc7ec414f
+PODFILE CHECKSUM: 504e9796a4d0be309efdc38b0ecf3fb0f4a3d17d
 
 COCOAPODS: 1.11.3

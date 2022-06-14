@@ -6,6 +6,7 @@ import AdSupport
 import CryptoKit
 import FirebaseCore
 import FirebaseInstallations
+import FirebaseAnalytics
 import YandexMobileMetrica
 
 
@@ -71,23 +72,23 @@ public class MobiFlowSwift: NSObject
     private let USERDEFAULT_DidWaitForAdjustAttribute = "USERDEFAULT_DidWaitForAdjustAttribute"
     private var attributeTimerSleepSeconds = 5
     
-    @objc public init(isAppmetrica: Int, isBranch: Int, isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, firebaseToken: String, branchKey: String,appmetricaKey: String, initDelegate: MobiFlowDelegate, isUnityApp: Int,faid : String)
+    @objc public init(isAppmetrica: Int, isBranch: Int, isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, firebaseToken: String, branchKey: String,appmetricaKey: String, initDelegate: MobiFlowDelegate, isUnityApp: Int)
     {
         super.init()
         
         self.isUnityApp = isUnityApp
         self.delegate = initDelegate
-        self.initialiseSDK(isAppmetrica: isAppmetrica, isBranch: isBranch, isAdjust: isAdjust, isDeeplinkURL: isDeeplinkURL, scheme: scheme, endpoint: endpoint, adjAppToken: adjAppToken, firebaseToken: firebaseToken ,branchKey: branchKey, appmetricaKey : appmetricaKey,faid : faid)
+        self.initialiseSDK(isAppmetrica: isAppmetrica, isBranch: isBranch, isAdjust: isAdjust, isDeeplinkURL: isDeeplinkURL, scheme: scheme, endpoint: endpoint, adjAppToken: adjAppToken, firebaseToken: firebaseToken ,branchKey: branchKey, appmetricaKey : appmetricaKey)
     }
     
-    public init(isAppmetrica: Int,isBranch: Int, isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, firebaseToken: String, branchKey: String,appmetricaKey: String, faid : String, initDelegate: MobiFlowDelegate) {
+    public init(isAppmetrica: Int,isBranch: Int, isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, firebaseToken: String, branchKey: String,appmetricaKey: String,  initDelegate: MobiFlowDelegate) {
         super.init()
         self.delegate = initDelegate
-        self.initialiseSDK(isAppmetrica: isAppmetrica, isBranch: isBranch, isAdjust: isAdjust, isDeeplinkURL: isDeeplinkURL, scheme: scheme, endpoint: endpoint, adjAppToken: adjAppToken, firebaseToken: firebaseToken ,branchKey: branchKey, appmetricaKey: appmetricaKey,faid : faid)
+        self.initialiseSDK(isAppmetrica: isAppmetrica, isBranch: isBranch, isAdjust: isAdjust, isDeeplinkURL: isDeeplinkURL, scheme: scheme, endpoint: endpoint, adjAppToken: adjAppToken, firebaseToken: firebaseToken ,branchKey: branchKey, appmetricaKey: appmetricaKey)
     }
     
-    private func initialiseSDK(isAppmetrica : Int, isBranch: Int, isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, firebaseToken: String, branchKey: String, appmetricaKey: String,faid : String) {
-         
+    private func initialiseSDK(isAppmetrica : Int, isBranch: Int, isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, firebaseToken: String, branchKey: String, appmetricaKey: String) {
+        
         self.isAppmetrica = isAppmetrica
         self.isBranch = isBranch
         self.isAdjust = isAdjust
@@ -100,7 +101,7 @@ public class MobiFlowSwift: NSObject
         self.firebaseToken = firebaseToken
         FirebaseApp.configure()
         
-        self.faid = faid
+        self.faid = Analytics.appInstanceID() ?? ""
         
         Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
         self.callFirebaseCallBack()
@@ -628,7 +629,7 @@ extension MobiFlowSwift: UIApplicationDelegate
         }
         
         self.referrerURL = userActivity.referrerURL?.absoluteString ?? ""
-
+      
         return false
     }
 }
