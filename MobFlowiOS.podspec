@@ -12,7 +12,7 @@ Pod::Spec.new do |spec|
   
   of MobFlowiOS.
                       DESC
-  spec.homepage     = 'https://github.com/MASDKManager/IOS-HTML-SDK'
+  spec.homepage     = 'https://github.com/MASDKManager/ios-html-sdk'
   spec.license = { :type => "MIT", :file => "LICENSE" }
   spec.author       = { "Maarouf" => "mobsdk10@gmail.com" }
   spec.source = {
@@ -23,11 +23,11 @@ Pod::Spec.new do |spec|
   spec.dependency 'Adjust'
   spec.dependency 'ReachabilitySwift'
   spec.dependency 'Firebase'
-  spec.dependency 'Firebase/Analytics'
-  spec.dependency 'Firebase/Messaging'
+  spec.dependency 'FirebaseAnalytics'
+  spec.dependency 'FirebaseMessaging'
+  spec.dependency 'FirebaseCrashlytics'
   spec.dependency 'Branch'
   spec.dependency 'YandexMobileMetrica/Dynamic'
-  spec.dependency 'Firebase/Crashlytics'
   spec.source_files  = "MobFlowiOS/*.{swift}"
   spec.resources = "MobFlowiOS/*.{storyboard,xib,xcassets,lproj,png}"
   spec.swift_version = '5'
