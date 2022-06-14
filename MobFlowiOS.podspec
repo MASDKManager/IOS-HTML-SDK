@@ -2,7 +2,7 @@ Pod::Spec.new do |spec|
 
   spec.platform = :ios
   spec.name         = "MobFlowiOS"
-  spec.version      = "1.0.1"
+  spec.version      = "1.0.3"
   spec.requires_arc =  true
   spec.summary      = "An sdk that inialize multiple library in order to run custom ad screen of MobFlowiOS."
   spec.description  = <<-DESC
@@ -32,6 +32,7 @@ Pod::Spec.new do |spec|
   spec.resources = "MobFlowiOS/*.{storyboard,xib,xcassets,lproj,png}"
   spec.swift_version = '5'
   spec.ios.deployment_target = '14.0'
-  
+
+  spec.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
   spec.static_framework = true
 end
