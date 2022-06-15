@@ -22,7 +22,6 @@
 		AC9056DD260DD6C80084E14F /* NoInternetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9056DA260DD6C70084E14F /* NoInternetViewController.swift */; };
 		AC9056DE260DD6C80084E14F /* MobFlowSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9056DB260DD6C70084E14F /* MobFlowSwift.swift */; };
 		AC9056DF260DD6C80084E14F /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9056DC260DD6C70084E14F /* WebViewController.swift */; };
-		AC9056E3260DD6E90084E14F /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = AC9056E1260DD6E90084E14F /* close.png */; };
 		AC9056E4260DD6E90084E14F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC9056E2260DD6E90084E14F /* Main.storyboard */; };
 		AC9056F6260DD74B0084E14F /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC9056F5260DD74B0084E14F /* images.xcassets */; };
 /* End PBXBuildFile section */
@@ -45,7 +44,6 @@
 		AC9056DA260DD6C70084E14F /* NoInternetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoInternetViewController.swift; sourceTree = "<group>"; };
 		AC9056DB260DD6C70084E14F /* MobFlowSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MobFlowSwift.swift; sourceTree = "<group>"; };
 		AC9056DC260DD6C70084E14F /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
-		AC9056E1260DD6E90084E14F /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
 		AC9056E2260DD6E90084E14F /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		AC9056F5260DD74B0084E14F /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
 		F8A70BA5E9CE3B4D998CE425 /* Pods-MobFlowiOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobFlowiOS.release.xcconfig"; path = "Target Support Files/Pods-MobFlowiOS/Pods-MobFlowiOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -139,7 +137,6 @@
 				0D26D1D62859F0E2002385C2 /* Delegates */,
 				0D26D1D52859F085002385C2 /* ViewController */,
 				AC9056F5260DD74B0084E14F /* images.xcassets */,
-				AC9056E1260DD6E90084E14F /* close.png */,
 				AC9056E2260DD6E90084E14F /* Main.storyboard */,
 				AC9056DB260DD6C70084E14F /* MobFlowSwift.swift */,
 				AC9056C1260DD3E30084E14F /* MobFlowiOS.h */,
@@ -227,7 +224,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC9056F6260DD74B0084E14F /* images.xcassets in Resources */,
-				AC9056E3260DD6E90084E14F /* close.png in Resources */,
 				AC9056E4260DD6E90084E14F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
