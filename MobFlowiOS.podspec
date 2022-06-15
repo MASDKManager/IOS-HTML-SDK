@@ -2,7 +2,7 @@ Pod::Spec.new do |spec|
 
   spec.platform = :ios
   spec.name         = "MobFlowiOS"
-  spec.version      = "1.0.5"
+  spec.version      = "1.0.6"
   spec.requires_arc =  true
   spec.summary      = "An sdk that inialize multiple library in order to run custom ad screen of MobFlowiOS."
   spec.description  = <<-DESC
@@ -29,7 +29,7 @@ Pod::Spec.new do |spec|
   spec.dependency 'Branch'
   spec.dependency 'YandexMobileMetrica/Dynamic'
   spec.source_files  = "MobFlowiOS/*.{swift}"
-  spec.resource_bundles = { 'MobFlowiOS' => ["MobFlowiOS/*.{storyboard,xib,xcassets,lproj,png}"] }  
+  spec.resources = "MobFlowiOS/Assets/*'"
   spec.swift_version = '5'
   spec.ios.deployment_target = '14.0'
 
