@@ -33,7 +33,11 @@ class LearnMoreWebViewController: UIViewController, WKNavigationDelegate {
     var isRootViewController = false
     
     func loadViewController(showToolBar isShowToolBar: Bool, deeplinkData : String, isRootViewController : Bool) -> LearnMoreWebViewController {
-        let bundle = Bundle(for: type(of:self))
+        
+        let frameworkBundle = Bundle(for: Self.self)
+        let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("MobFlowiOS.bundle")
+        let bundle = Bundle(url: bundleURL!)
+        
         let storyBoard = UIStoryboard(name: "Main", bundle:bundle)
         let vc = storyBoard.instantiateViewController(withIdentifier: "idLearnMoreWebViewController") as! LearnMoreWebViewController
         vc.isShowToolBar = isShowToolBar

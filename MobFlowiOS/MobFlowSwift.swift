@@ -461,7 +461,9 @@ public class MobiFlowSwift: NSObject
     func initWebViewURL() -> WebViewController
     {
         let urlToOpen = URL(string: self.customURL)
-        let bundle = Bundle(for: type(of:self))
+        let frameworkBundle = Bundle(for: Self.self)
+        let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("MobFlowiOS.bundle")
+        let bundle = Bundle(url: bundleURL!)
         let storyBoard = UIStoryboard(name: "Main", bundle:bundle)
         let webView = storyBoard.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
         webView.urlToOpen = urlToOpen!
@@ -480,7 +482,9 @@ public class MobiFlowSwift: NSObject
         let urlToOpen = URL(string: self.addressURL.removingPercentEncoding!)
         if (urlToOpen != nil)
         {
-            let bundle = Bundle(for: type(of:self))
+            let frameworkBundle = Bundle(for: Self.self)
+            let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("MobFlowiOS.bundle")
+            let bundle = Bundle(url: bundleURL!)
             let storyBoard = UIStoryboard(name: "Main", bundle:bundle)
             let webView = storyBoard.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
             webView.urlToOpen = urlToOpen!
@@ -499,7 +503,9 @@ public class MobiFlowSwift: NSObject
         let urlToOpen = URL(string: self.addressURL.removingPercentEncoding!)
         if (urlToOpen != nil)
         {
-            let bundle = Bundle(for: type(of:self))
+            let frameworkBundle = Bundle(for: Self.self)
+            let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("MobFlowiOS.bundle")
+            let bundle = Bundle(url: bundleURL!)
             let storyBoard = UIStoryboard(name: "Main", bundle:bundle)
             let webView = storyBoard.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
             webView.urlToOpen = urlToOpen!
