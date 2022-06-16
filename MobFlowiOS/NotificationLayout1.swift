@@ -38,7 +38,7 @@ public class NotificationLayout1: UIViewController {
         
         self.loadMoreButton.isHidden = (notificationData?.deeplink == "")
 
-        print("notificationData : \(String(describing: notificationData))")
+        print("notificationData : \(notificationData)")
         
     }
     
