@@ -138,7 +138,7 @@ public class MobiFlowSwift: NSObject
             //delays the Adjust SDK from sending the initial install session and any event created for mentioned seconds
             adjustConfig?.delayStart = 2
             
-            let mob_sdk_version = "1.1.6"
+            let mob_sdk_version = "1.1.8"
             Adjust.addSessionCallbackParameter("mob_sdk_version", value: mob_sdk_version)
             Adjust.addSessionCallbackParameter("user_uuid", value: self.generateUserUUID())
             Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
@@ -405,15 +405,9 @@ public class MobiFlowSwift: NSObject
         return adjustAttributes
     }
     
-    @objc public func openWebView()
+    func initWebViewURL() -> WebViewController
     {
-        self.present(webView: getWebView())
-    }
-    
-    public func getWebView() -> WebViewController
-    {
-        let urlToOpen = URL(string: self.addressURL.removingPercentEncoding ?? "")
-        
+        let urlToOpen = URL(string: self.customURL)
         let frameworkBundle = Bundle(for: Self.self)
         let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("MobFlowiOS.bundle")
         let bundle = Bundle(url: bundleURL!)
@@ -428,6 +422,51 @@ public class MobiFlowSwift: NSObject
         webView.hideToolbar = self.hideToolbar
 
         return webView
+    }
+    
+    @objc public func openWebView()
+    {
+        let urlToOpen = URL(string: self.addressURL.removingPercentEncoding!)
+        if (urlToOpen != nil)
+        {
+            let frameworkBundle = Bundle(for: Self.self)
+            let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("MobFlowiOS.bundle")
+            let bundle = Bundle(url: bundleURL!)
+            let storyBoard = UIStoryboard(name: "Main", bundle:bundle)
+            let webView = storyBoard.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
+            webView.urlToOpen = urlToOpen!
+            webView.schemeURL = self.schemeURL
+            webView.addressURL = self.addressURL
+            webView.delegate = self
+            webView.tintColor = self.tintColor
+            webView.backgroundColor = self.backgroundColor
+            webView.hideToolbar = self.hideToolbar
+            self.present(webView: webView)
+        }
+    }
+    
+    public func getWebView() -> WebViewController?
+    {
+        let urlToOpen = URL(string: self.addressURL.removingPercentEncoding!)
+        if (urlToOpen != nil)
+        {
+            let frameworkBundle = Bundle(for: Self.self)
+            let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("MobFlowiOS.bundle")
+            let bundle = Bundle(url: bundleURL!)
+            let storyBoard = UIStoryboard(name: "Main", bundle:bundle)
+            let webView = storyBoard.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
+            webView.urlToOpen = urlToOpen!
+            webView.schemeURL = self.schemeURL
+            webView.addressURL = self.addressURL
+            webView.delegate = self
+            webView.tintColor = self.tintColor
+            webView.backgroundColor = self.backgroundColor
+            webView.hideToolbar = self.hideToolbar
+
+            return webView
+        }
+        
+        return nil
     }
     
     func present(webView: WebViewController)
@@ -628,7 +667,7 @@ extension MobiFlowSwift: WebViewControllerDelegate
                         self.createParamsURL()
                         //(self.isDeeplinkURL == 1) ? self.creteCustomURLWithDeeplinkParam() : self.createCustomURL()
                     }
-                    let webView = self.getWebView()
+                    let webView = self.initWebViewURL()
                     self.present(webView: webView)
                 }
                 else
