@@ -138,7 +138,7 @@ public class MobiFlowSwift: NSObject
             //delays the Adjust SDK from sending the initial install session and any event created for mentioned seconds
             adjustConfig?.delayStart = 2
             
-            let mob_sdk_version = "1.1.5"
+            let mob_sdk_version = "1.1.6"
             Adjust.addSessionCallbackParameter("mob_sdk_version", value: mob_sdk_version)
             Adjust.addSessionCallbackParameter("user_uuid", value: self.generateUserUUID())
             Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
