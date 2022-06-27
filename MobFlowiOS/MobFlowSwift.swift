@@ -4,8 +4,7 @@ import AppTrackingTransparency
 import Branch
 import AdSupport
 import CryptoKit
-import FirebaseCore
-import FirebaseInstallations
+import Firebase 
 import FirebaseAnalytics
 import YandexMobileMetrica
 
@@ -132,19 +131,26 @@ public class MobiFlowSwift: NSObject
         {
             let environment = ADJEnvironmentProduction
             let adjustConfig = ADJConfig(appToken: self.adjAppToken, environment: environment)
+            
+            
             adjustConfig?.sendInBackground = true
             adjustConfig?.delegate = self
             
             //delays the Adjust SDK from sending the initial install session and any event created for mentioned seconds
             adjustConfig?.delayStart = 2
             
-            let mob_sdk_version = "1.1.8"
+            Adjust.appDidLaunch(adjustConfig)
+            
+            let mob_sdk_version = "1.1.9"
             Adjust.addSessionCallbackParameter("mob_sdk_version", value: mob_sdk_version)
             Adjust.addSessionCallbackParameter("user_uuid", value: self.generateUserUUID())
             Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
-            Adjust.appDidLaunch(adjustConfig)
+           
+            let adjustEvent = ADJEvent(eventToken: firebaseToken)
+            adjustEvent?.addCallbackParameter("eventValue", value: self.faid) //firebase Instance Id
+            adjustEvent?.addCallbackParameter("user_uuid", value: self.generateUserUUID())
             
-            self.callFirebaseCallBack()
+            Adjust.trackEvent(adjustEvent)
             
             //resumes the delayed adjust install session
             Adjust.sendFirstPackages()
@@ -158,14 +164,7 @@ public class MobiFlowSwift: NSObject
             self.showNativeWithPermission(dic: [:])
         }
     }
-    
-    private func callFirebaseCallBack() {
-        let adjustEvent = ADJEvent(eventToken: firebaseToken)
-        adjustEvent?.addCallbackParameter("eventValue", value: self.faid) //firebase Instance Id
-        adjustEvent?.addCallbackParameter("user_uuid", value: self.generateUserUUID())
-        
-        Adjust.trackEvent(adjustEvent)
-    }
+     
     
     private func checkIfEndPointAvailable(endPoint: String) {
         
