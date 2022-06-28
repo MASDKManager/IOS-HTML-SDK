@@ -14,5 +14,10 @@ target 'MobFlowiOS' do
   pod 'Branch'
   pod 'YandexMobileMetrica/Dynamic', '4.2.0'
  
+ post_install do |installer|
+   installer.pods_project.build_configurations.each do |config|
+     config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+   end
+ end
  
 end
