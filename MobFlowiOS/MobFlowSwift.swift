@@ -1,6 +1,5 @@
 import UIKit
 import AppTrackingTransparency
-import Branch
 import AdSupport
 import CryptoKit
 import Firebase
@@ -118,12 +117,8 @@ public class MobiFlowSwift: NSObject
         
         if self.isBranch == 1
         {
-            Branch.setUseTestBranchKey(true)
-            Branch.getInstance(self.branchKey).enableLogging()
-            let uuid = UIDevice.current.identifierForVendor!.uuidString
-            Branch.getInstance(self.branchKey).setRequestMetadataKey("app_to_branch_device_id", value: uuid)
-            let bundleIdentifier = Bundle.main.bundleIdentifier
-            Branch.getInstance(self.branchKey).setRequestMetadataKey("package_id", value: bundleIdentifier)
+            
+            
         }
         
         if self.isAdjust == 1
@@ -549,46 +544,9 @@ private extension Int {
 
 extension MobiFlowSwift: UIApplicationDelegate
 {
-    public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
-    {
-        if self.isBranch == 1
-        {
-            Branch.getInstance(self.branchKey).initSession(launchOptions: launchOptions) { (params, error) in
-                let referringParams = Branch.getInstance(self.branchKey).getLatestReferringParams()
-                let referringLink = referringParams!["~referring_link"] as? String ?? ""
-                if !referringLink.isEmpty
-                {
-                    UserDefaults.standard.set(referringLink, forKey: "deeplinkURL")
-                }
-            }
-        }
-        
-        return true
-    }
-    
-    public func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool
-    {
-        if self.isBranch == 1
-        {
-            return Branch.getInstance(self.branchKey).application(app, open: url, options: options)
-        }
-        return false
-    }
-    
-    public func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void)
-    {
-        if self.isBranch == 1
-        {
-            Branch.getInstance(self.branchKey).handlePushNotification(userInfo)
-        }
-    }
-    
+   
     public func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
     {
-        if self.isBranch == 1
-        {
-            return Branch.getInstance(self.branchKey).continue(userActivity)
-        }
         
         self.referrerURL = userActivity.referrerURL?.absoluteString ?? ""
       
