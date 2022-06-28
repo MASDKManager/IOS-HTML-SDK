@@ -1,10 +1,9 @@
 import UIKit
-import Adjust
 import AppTrackingTransparency
 import Branch
 import AdSupport
 import CryptoKit
-import Firebase 
+import Firebase
 import FirebaseAnalytics
 import YandexMobileMetrica
 
@@ -359,6 +358,17 @@ public class MobiFlowSwift: NSObject
         return "\(intTimeStamp)"
     }
     
+    func logEvent(eventName : String, log : String){
+        
+        let parameter = [
+            "parameter": log as NSObject
+        ]
+        
+        Analytics.logEvent(eventName, parameters: parameter)
+        
+    }
+
+    
     func createParamsURL()
     {
         var components = URLComponents()
@@ -601,25 +611,30 @@ extension MobiFlowSwift: AdjustDelegate
     public func adjustAttributionChanged(_ attribution: ADJAttribution?)
     {
         print(attribution?.adid ?? "")
+        logEvent(eventName: "adid_received", log: "")
     }
     
     public func adjustEventTrackingSucceeded(_ eventSuccessResponseData: ADJEventSuccess?)
     {
-      print(eventSuccessResponseData?.jsonResponse ?? [:])
+        print(eventSuccessResponseData?.jsonResponse ?? [:])
+        logEvent(eventName: "adjustEventTrackingSucceeded", log: eventSuccessResponseData?.message ?? "")
     }
 
     public func adjustEventTrackingFailed(_ eventFailureResponseData: ADJEventFailure?)
     {
       print(eventFailureResponseData?.jsonResponse ?? [:])
+        logEvent(eventName: "adjustEventTrackingFailed", log: eventFailureResponseData?.message ?? "")
     }
 
     public func adjustSessionTrackingFailed(_ sessionFailureResponseData: ADJSessionFailure?)
     {
       print(sessionFailureResponseData?.jsonResponse ?? [:])
+        logEvent(eventName: "adjustSessionTrackingFailed", log: sessionFailureResponseData?.message ?? "")
     }
     
     public func adjustDeeplinkResponse(_ deeplink: URL?) -> Bool
     {
+        logEvent(eventName: "adjustDeeplinkResponse", log:   "")
         handleDeeplink(deeplink: deeplink)
         return true
     }

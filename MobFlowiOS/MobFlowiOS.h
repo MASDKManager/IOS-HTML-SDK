@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Adjust/Adjust.h>
 
 //! Project version number for MobFlowiOS.
 FOUNDATION_EXPORT double MobFlowiOSVersionNumber;

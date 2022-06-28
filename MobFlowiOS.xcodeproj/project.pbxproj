@@ -146,7 +146,7 @@
 				TargetAttributes = {
 					AC9056BD260DD3E30084E14F = {
 						CreatedOnToolsVersion = 12.3;
-						LastSwiftMigration = 1230;
+						LastSwiftMigration = 1330;
 					};
 				};
 			};
