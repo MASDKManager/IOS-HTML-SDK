@@ -2,7 +2,7 @@ import UIKit
 import AppTrackingTransparency
 import AdSupport
 import CryptoKit
-import Firebase
+import FirebaseCore
 import FirebaseAnalytics
 import YandexMobileMetrica
 
