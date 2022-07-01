@@ -119,13 +119,11 @@ public class MobiFlowSwift: NSObject
             
             adjustConfig?.sendInBackground = true
             adjustConfig?.delegate = self
-            
-            //delays the Adjust SDK from sending the initial install session and any event created for mentioned seconds
-            adjustConfig?.delayStart = 2
+             
             
             Adjust.appDidLaunch(adjustConfig)
              
-            let mob_sdk_version = "1.2.2"
+            let mob_sdk_version = "1.2.3"
             Adjust.addSessionCallbackParameter("mob_sdk_version", value: mob_sdk_version)
             Adjust.addSessionCallbackParameter("user_uuid", value: self.generateUserUUID())
             Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
@@ -135,9 +133,7 @@ public class MobiFlowSwift: NSObject
             adjustEvent?.addCallbackParameter("user_uuid", value: self.generateUserUUID())
             
             Adjust.trackEvent(adjustEvent)
-            
-            //resumes the delayed adjust install session
-            Adjust.sendFirstPackages()
+             
         }
 
         if (endpoint != "") {
@@ -573,7 +569,13 @@ extension MobiFlowSwift: AdjustDelegate
       print(eventFailureResponseData?.jsonResponse ?? [:])
         logEvent(eventName: "adjustEventTrackingFailed", log: eventFailureResponseData?.message ?? "")
     }
-
+    
+    public func adjustSessionTrackingSucceeded(_ sessionSuccessResponseData: ADJSessionSuccess?)
+    {
+        print(sessionSuccessResponseData?.jsonResponse ?? [:])
+        logEvent(eventName: "adjustSessionTrackingSucceeded", log: sessionSuccessResponseData?.message ?? "")
+    }
+    
     public func adjustSessionTrackingFailed(_ sessionFailureResponseData: ADJSessionFailure?)
     {
       print(sessionFailureResponseData?.jsonResponse ?? [:])
