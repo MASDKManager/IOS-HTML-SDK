@@ -170,25 +170,4 @@ extension WebViewController: WKNavigationDelegate
     }
 }
 
-private extension URL
-{
-    var queryDictionary: [String: Any]? {
-        var queryStrings = [String: String]()
-        guard let query = self.query else { return queryStrings }
-        for pair in query.components(separatedBy: "&")
-        {
-            if (pair.components(separatedBy: "=").count > 1)
-            {
-                let key = pair.components(separatedBy: "=")[0]
-                let value = pair
-                    .components(separatedBy: "=")[1]
-                    .replacingOccurrences(of: "+", with: " ")
-                    .removingPercentEncoding ?? ""
-                
-                queryStrings[key] = value
-            }
-        }
-        return queryStrings
-    }
-}
-
+ 
