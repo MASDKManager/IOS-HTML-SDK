@@ -70,7 +70,6 @@
 				AC9056DC260DD6C70084E14F /* WebViewController.swift */,
 				18B70C8527462C640003F67F /* Extensions.swift */,
 				AC9056C1260DD3E30084E14F /* MobFlowiOS.h */,
-				AC9056C2260DD3E30084E14F /* Info.plist */,
 			);
 			path = SDK;
 			sourceTree = "<group>";
@@ -105,6 +104,7 @@
 		AC9056C0260DD3E30084E14F /* MobFlowiOS */ = {
 			isa = PBXGroup;
 			children = (
+				AC9056C2260DD3E30084E14F /* Info.plist */,
 				AC9056F5260DD74B0084E14F /* images.xcassets */,
 				AC9056E1260DD6E90084E14F /* close.png */,
 				AC9056E2260DD6E90084E14F /* Main.storyboard */,
