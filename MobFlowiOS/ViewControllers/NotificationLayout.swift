@@ -12,7 +12,7 @@ protocol NotificationLayoutDelegate
     func closeNotificationLayout()
 }
 
-public class NotificationLayout1: UIViewController {
+public class NotificationLayout: UIViewController {
 
     @IBOutlet weak private var layoutTitle : UILabel!
     @IBOutlet weak private var layoutDesciption : UILabel!

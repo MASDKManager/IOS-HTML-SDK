@@ -8,7 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		0DBA545E2875854F00A599FA /* NotificationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA545D2875854F00A599FA /* NotificationDataManager.swift */; };
-		180B9B0C273BC4B200B19CA4 /* NotificationLayout1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180B9B0B273BC4B200B19CA4 /* NotificationLayout1.swift */; };
+		0DBA54682875C12E00A599FA /* ExtNotificationLayoutDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA54632875C12E00A599FA /* ExtNotificationLayoutDelegate.swift */; };
+		0DBA54692875C12F00A599FA /* UIApplicationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA54642875C12E00A599FA /* UIApplicationDelegate.swift */; };
+		0DBA546A2875C12F00A599FA /* ExtMobiFlowDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA54652875C12E00A599FA /* ExtMobiFlowDelegate.swift */; };
+		0DBA546B2875C12F00A599FA /* ExtAdjustDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA54662875C12E00A599FA /* ExtAdjustDelegate.swift */; };
+		0DBA546C2875C12F00A599FA /* WebViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA54672875C12E00A599FA /* WebViewControllerDelegate.swift */; };
+		180B9B0C273BC4B200B19CA4 /* NotificationLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180B9B0B273BC4B200B19CA4 /* NotificationLayout.swift */; };
 		1867FB75274CEC8000A65248 /* LearnMoreWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1867FB74274CEC8000A65248 /* LearnMoreWebViewController.swift */; };
 		18B70C8627462C640003F67F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B70C8527462C640003F67F /* Extensions.swift */; };
 		8F3A183814EF57DD31977413 /* Pods_MobFlowiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC6799E605C3567F1BFECAED /* Pods_MobFlowiOS.framework */; };
@@ -23,9 +28,14 @@
 
 /* Begin PBXFileReference section */
 		0DBA545D2875854F00A599FA /* NotificationDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDataManager.swift; sourceTree = "<group>"; };
-		180B9B0B273BC4B200B19CA4 /* NotificationLayout1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationLayout1.swift; sourceTree = "<group>"; };
+		0DBA54632875C12E00A599FA /* ExtNotificationLayoutDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtNotificationLayoutDelegate.swift; sourceTree = "<group>"; };
+		0DBA54642875C12E00A599FA /* UIApplicationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationDelegate.swift; sourceTree = "<group>"; };
+		0DBA54652875C12E00A599FA /* ExtMobiFlowDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtMobiFlowDelegate.swift; sourceTree = "<group>"; };
+		0DBA54662875C12E00A599FA /* ExtAdjustDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtAdjustDelegate.swift; sourceTree = "<group>"; };
+		0DBA54672875C12E00A599FA /* WebViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewControllerDelegate.swift; sourceTree = "<group>"; };
+		180B9B0B273BC4B200B19CA4 /* NotificationLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationLayout.swift; sourceTree = "<group>"; };
 		1867FB74274CEC8000A65248 /* LearnMoreWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LearnMoreWebViewController.swift; sourceTree = "<group>"; };
-		18B70C8527462C640003F67F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		18B70C8527462C640003F67F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = ../SDK/Extensions.swift; sourceTree = "<group>"; };
 		9E04B6D01C0433BA21015ABE /* Pods-MobFlowiOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobFlowiOS.debug.xcconfig"; path = "Target Support Files/Pods-MobFlowiOS/Pods-MobFlowiOS.debug.xcconfig"; sourceTree = "<group>"; };
 		AC9056BE260DD3E30084E14F /* MobFlowiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MobFlowiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC9056C1260DD3E30084E14F /* MobFlowiOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MobFlowiOS.h; sourceTree = "<group>"; };
@@ -64,14 +74,40 @@
 			isa = PBXGroup;
 			children = (
 				AC9056DB260DD6C70084E14F /* MobFlowSwift.swift */,
-				AC9056DA260DD6C70084E14F /* NoInternetViewController.swift */,
-				1867FB74274CEC8000A65248 /* LearnMoreWebViewController.swift */,
-				180B9B0B273BC4B200B19CA4 /* NotificationLayout1.swift */,
-				AC9056DC260DD6C70084E14F /* WebViewController.swift */,
-				18B70C8527462C640003F67F /* Extensions.swift */,
 				AC9056C1260DD3E30084E14F /* MobFlowiOS.h */,
 			);
 			path = SDK;
+			sourceTree = "<group>";
+		};
+		0DBA54622875C12400A599FA /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				0DBA54662875C12E00A599FA /* ExtAdjustDelegate.swift */,
+				0DBA54652875C12E00A599FA /* ExtMobiFlowDelegate.swift */,
+				0DBA54632875C12E00A599FA /* ExtNotificationLayoutDelegate.swift */,
+				0DBA54642875C12E00A599FA /* UIApplicationDelegate.swift */,
+				0DBA54672875C12E00A599FA /* WebViewControllerDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
+		0DBA546D2875C21800A599FA /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				AC9056DA260DD6C70084E14F /* NoInternetViewController.swift */,
+				1867FB74274CEC8000A65248 /* LearnMoreWebViewController.swift */,
+				180B9B0B273BC4B200B19CA4 /* NotificationLayout.swift */,
+				AC9056DC260DD6C70084E14F /* WebViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		0DBA546E2875C31800A599FA /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				18B70C8527462C640003F67F /* Extensions.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		911FA9A17973379AF806AB87 /* Pods */ = {
@@ -104,6 +140,9 @@
 		AC9056C0260DD3E30084E14F /* MobFlowiOS */ = {
 			isa = PBXGroup;
 			children = (
+				0DBA546E2875C31800A599FA /* Utils */,
+				0DBA546D2875C21800A599FA /* ViewControllers */,
+				0DBA54622875C12400A599FA /* Delegates */,
 				AC9056C2260DD3E30084E14F /* Info.plist */,
 				AC9056F5260DD74B0084E14F /* images.xcassets */,
 				AC9056E1260DD6E90084E14F /* close.png */,
@@ -231,11 +270,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				18B70C8627462C640003F67F /* Extensions.swift in Sources */,
+				0DBA546A2875C12F00A599FA /* ExtMobiFlowDelegate.swift in Sources */,
 				0DBA545E2875854F00A599FA /* NotificationDataManager.swift in Sources */,
+				0DBA546B2875C12F00A599FA /* ExtAdjustDelegate.swift in Sources */,
 				AC9056DE260DD6C80084E14F /* MobFlowSwift.swift in Sources */,
 				AC9056DF260DD6C80084E14F /* WebViewController.swift in Sources */,
-				180B9B0C273BC4B200B19CA4 /* NotificationLayout1.swift in Sources */,
+				180B9B0C273BC4B200B19CA4 /* NotificationLayout.swift in Sources */,
+				0DBA54692875C12F00A599FA /* UIApplicationDelegate.swift in Sources */,
 				1867FB75274CEC8000A65248 /* LearnMoreWebViewController.swift in Sources */,
+				0DBA54682875C12E00A599FA /* ExtNotificationLayoutDelegate.swift in Sources */,
+				0DBA546C2875C12F00A599FA /* WebViewControllerDelegate.swift in Sources */,
 				AC9056DD260DD6C80084E14F /* NoInternetViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

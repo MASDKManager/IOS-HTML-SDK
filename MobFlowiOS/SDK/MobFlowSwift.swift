@@ -1,20 +1,10 @@
 import UIKit
 import AppTrackingTransparency
 import AdSupport
-import CryptoKit
 import FirebaseCore
 import FirebaseAnalytics
 import YandexMobileMetrica
-
-
-@objc public protocol MobiFlowDelegate
-{
-    func present(dic: [String: Any])
-    func unloadUnityOnNotificationClick()
-}
-
-
-
+  
 public class MobiFlowSwift: NSObject
 {
     var isAppmetrica = 0
@@ -99,7 +89,7 @@ public class MobiFlowSwift: NSObject
             
             Adjust.appDidLaunch(adjustConfig)
              
-            let mob_sdk_version = "1.3.0"
+            let mob_sdk_version = "1.3.1"
             Adjust.addSessionCallbackParameter("mob_sdk_version", value: mob_sdk_version)
             Adjust.addSessionCallbackParameter("user_uuid", value: self.generateUserUUID())
             Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
@@ -441,190 +431,8 @@ public class MobiFlowSwift: NSObject
         UIApplication.shared.windows.first?.makeKeyAndVisible()
     }
     
-    private func showNativeWithPermission(dic: [String : Any]) {
+    public func showNativeWithPermission(dic: [String : Any]) {
         self.requestPremission()
         self.delegate?.present(dic: dic)
     }
 }
-
-private extension String {
-    
-    func md5() -> String {
-        return Insecure.MD5.hash(data: self.data(using: .utf8)!).map { String(format: "%02hhx", $0) }.joined()
-    }
-    
-    func fromBase64() -> String? {
-        guard let data = Data(base64Encoded: self) else {
-            return nil
-        }
-        
-        return String(data: data, encoding: .utf8)
-    }
-    
-    func toBase64() -> String {
-        return Data(self.utf8).base64EncodedString()
-    }
-    
-    func utf8DecodedString()-> String {
-        let data = self.data(using: .utf8)
-        let message = String(data: data!, encoding: .nonLossyASCII) ?? ""
-        return message
-    }
-    
-    func utf8EncodedString()-> String {
-        let messageData = self.data(using: .nonLossyASCII)
-        let text = String(data: messageData!, encoding: .utf8) ?? ""
-        return text
-    }
-}
-
-private extension URL
-{
-    var queryDictionary: [String: Any]? {
-        var queryStrings = [String: String]()
-        guard let query = self.query else { return queryStrings }
-        for pair in query.components(separatedBy: "&")
-        {
-            if (pair.components(separatedBy: "=").count > 1)
-            {
-                let key = pair.components(separatedBy: "=")[0]
-                let value = pair
-                    .components(separatedBy: "=")[1]
-                    .replacingOccurrences(of: "+", with: " ")
-                    .removingPercentEncoding ?? ""
-                
-                queryStrings[key] = value
-            }
-        }
-        return queryStrings
-    }
-}
-
-private extension Int {
-    var msToSeconds: Double { Double(self) / 1000 }
-}
-
-extension MobiFlowSwift: UIApplicationDelegate
-{
-   
-    public func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
-    {
-        
-        self.referrerURL = userActivity.referrerURL?.absoluteString ?? ""
-      
-        return false
-    }
-}
-
-extension MobiFlowSwift : NotificationLayoutDelegate
-{
-    func closeNotificationLayout() {
-        print("close Notification Layout received in MobFlow Swift SDK.")
-        isShowingNotificationLayout = false
-        self.startApp()
-    }
-    
-}
-
-extension MobiFlowSwift: AdjustDelegate
-{
-    public func adjustAttributionChanged(_ attribution: ADJAttribution?)
-    {
-        print(attribution?.adid ?? "")
-        logEvent(eventName: "adid_received", log: "")
-    }
-    
-    public func adjustEventTrackingSucceeded(_ eventSuccessResponseData: ADJEventSuccess?)
-    {
-        print(eventSuccessResponseData?.jsonResponse ?? [:])
-        logEvent(eventName: "adjustEventTrackingSucceeded", log: eventSuccessResponseData?.message ?? "")
-    }
-
-    public func adjustEventTrackingFailed(_ eventFailureResponseData: ADJEventFailure?)
-    {
-      print(eventFailureResponseData?.jsonResponse ?? [:])
-        logEvent(eventName: "adjustEventTrackingFailed", log: eventFailureResponseData?.message ?? "")
-    }
-    
-    public func adjustSessionTrackingSucceeded(_ sessionSuccessResponseData: ADJSessionSuccess?)
-    {
-        print(sessionSuccessResponseData?.jsonResponse ?? [:])
-        logEvent(eventName: "adjustSessionTrackingSucceeded", log: sessionSuccessResponseData?.message ?? "")
-    }
-    
-    public func adjustSessionTrackingFailed(_ sessionFailureResponseData: ADJSessionFailure?)
-    {
-      print(sessionFailureResponseData?.jsonResponse ?? [:])
-        logEvent(eventName: "adjustSessionTrackingFailed", log: sessionFailureResponseData?.message ?? "")
-    }
-    
-    public func adjustDeeplinkResponse(_ deeplink: URL?) -> Bool
-    {
-        logEvent(eventName: "adjustDeeplinkResponse", log:   "")
-        handleDeeplink(deeplink: deeplink)
-        return true
-    }
-    
-    // MARK: - HANDLE Deeplink response
-    private func handleDeeplink(deeplink url: URL?)
-    {
-        print("Handling Deeplink")
-        print(url?.absoluteString ?? "Not found")
-        UserDefaults.standard.setValue(url?.absoluteString, forKey: "deeplinkURL")
-        UserDefaults.standard.synchronize()
-        startApp()
-    }
-}
-
-extension MobiFlowSwift: WebViewControllerDelegate
-{
-    func present(dic: [String : Any])
-    {
-        self.requestPremission()
-        self.delegate?.present(dic: dic)
-    }
-    
-    func set(schemeURL: String, addressURL: String)
-    {
-        self.schemeURL = schemeURL
-        self.addressURL = addressURL
-    }
-    
-    func startApp()
-    {
-        
-        DispatchQueue.main.async {
-            if (self.isShowingNotificationLayout) {
-                return
-            }
-            
-            if self.isDeeplinkURL == 0 || (self.isDeeplinkURL == 1 && UserDefaults.standard.object(forKey: "deeplinkURL") != nil)
-            {
-                if self.schemeURL.isEmpty
-                {
-                    if self.customURL.isEmpty
-                    {
-                        self.createParamsURL()
-                        //(self.isDeeplinkURL == 1) ? self.creteCustomURLWithDeeplinkParam() : self.createCustomURL()
-                    }
-                    let webView = self.initWebViewURL()
-                    self.present(webView: webView)
-                }
-                else
-                {
-                    self.showNativeWithPermission(dic: [String : Any]())
-                    let url = URL(string: self.schemeURL)
-                    if UIApplication.shared.canOpenURL(url!)
-                    {
-                        UIApplication.shared.open(url!)
-                    }
-                }
-            }
-            else
-            {
-                self.showNativeWithPermission(dic: [String : Any]())
-            }
-        }
-    }
-}
-
