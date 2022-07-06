@@ -27,7 +27,7 @@ Pod::Spec.new do |spec|
   spec.dependency 'FirebaseMessaging'
   spec.dependency 'FirebaseCrashlytics'
   spec.dependency 'YandexMobileMetrica/Dynamic'
-  spec.source_files  = 'MobFlowiOS/**/*.{h,m,swift}' 
+  spec.source_files  = "MobFlowiOS/**/*.{h,m,swift}"
   spec.resource_bundles = {
     'MobFlowiOS' => ['MobFlowiOS/*.{storyboard,xib,xcassets,lproj,png}']
   }

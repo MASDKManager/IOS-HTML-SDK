@@ -63,9 +63,6 @@
 		0DBA545F2875AE9200A599FA /* SDK */ = {
 			isa = PBXGroup;
 			children = (
-				AC9056F5260DD74B0084E14F /* images.xcassets */,
-				AC9056E1260DD6E90084E14F /* close.png */,
-				AC9056E2260DD6E90084E14F /* Main.storyboard */,
 				AC9056DB260DD6C70084E14F /* MobFlowSwift.swift */,
 				AC9056DA260DD6C70084E14F /* NoInternetViewController.swift */,
 				1867FB74274CEC8000A65248 /* LearnMoreWebViewController.swift */,
@@ -108,6 +105,9 @@
 		AC9056C0260DD3E30084E14F /* MobFlowiOS */ = {
 			isa = PBXGroup;
 			children = (
+				AC9056F5260DD74B0084E14F /* images.xcassets */,
+				AC9056E1260DD6E90084E14F /* close.png */,
+				AC9056E2260DD6E90084E14F /* Main.storyboard */,
 				0DBA545F2875AE9200A599FA /* SDK */,
 				0DBA545C2875853600A599FA /* Models */,
 			);
