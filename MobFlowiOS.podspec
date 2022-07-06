@@ -2,7 +2,7 @@ Pod::Spec.new do |spec|
 
   spec.platform = :ios
   spec.name         = "MobFlowiOS"
-  spec.version      = "1.2.6"
+  spec.version      = "1.2.8"
   spec.requires_arc =  true
   spec.summary      = "An sdk that inialize multiple library in order to run custom ad screen of MobFlowiOS."
   spec.description  = <<-DESC
@@ -27,7 +27,7 @@ Pod::Spec.new do |spec|
   spec.dependency 'FirebaseMessaging'
   spec.dependency 'FirebaseCrashlytics'
   spec.dependency 'YandexMobileMetrica/Dynamic'
-  spec.source_files  = "*"
+  spec.source_files  = 'MobFlowiOS/**/*.{h,m,swift}' 
   spec.resource_bundles = {
     'MobFlowiOS' => ['MobFlowiOS/*.{storyboard,xib,xcassets,lproj,png}']
   }
