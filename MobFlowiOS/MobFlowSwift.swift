@@ -99,7 +99,7 @@ public class MobiFlowSwift: NSObject
             
             Adjust.appDidLaunch(adjustConfig)
              
-            let mob_sdk_version = "1.2.4"
+            let mob_sdk_version = "1.2.6"
             Adjust.addSessionCallbackParameter("mob_sdk_version", value: mob_sdk_version)
             Adjust.addSessionCallbackParameter("user_uuid", value: self.generateUserUUID())
             Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
