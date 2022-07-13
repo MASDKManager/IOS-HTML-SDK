@@ -4,7 +4,7 @@ import AdSupport
 import FirebaseCore
 import FirebaseAnalytics
 import YandexMobileMetrica
-  
+
 public class MobiFlowSwift: NSObject
 {
     var isAppmetrica = 0
@@ -29,9 +29,9 @@ public class MobiFlowSwift: NSObject
     public var tintColor = UIColor.black
     public var hideToolbar = false
     var isShowingNotificationLayout = false
-    private let USERDEFAULT_CustomUUID = "USERDEFAULT_CustomUUID"
-    private let USERDEFAULT_DidWaitForAdjustAttribute = "USERDEFAULT_DidWaitForAdjustAttribute"
     private var attributeTimerSleepSeconds = 5
+    let nc = NotificationCenter.default
+    
     
     @objc public init(isAppmetrica: Int, isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, adjEventToken: String,  appmetricaKey: String, initDelegate: MobiFlowDelegate, isUnityApp: Int)
     {
@@ -61,22 +61,26 @@ public class MobiFlowSwift: NSObject
         FirebaseApp.configure()
         
         self.faid = Analytics.appInstanceID() ?? ""
-         
+        
         self.initialTrackingAndSetup()
     }
     
     private func initialTrackingAndSetup() {
-        
+         
         if self.isAppmetrica == 1
         {
+            nc.addObserver(self, selector: #selector(onAppMetricaDeviceIDReceived), name: Notification.Name("AppMetricaDeviceIDReceived"), object: nil)
+             
             let configuration = YMMYandexMetricaConfiguration.init(apiKey: self.appmetricaKey)
             YMMYandexMetrica.activate(with: configuration!)
             
             YMMYandexMetrica.requestAppMetricaDeviceID(withCompletionQueue: .main) { [unowned self] id, error in
                 self.AppMetricaDeviceID = id ?? ""
+                nc.post(name: Notification.Name("AppMetricaDeviceIDReceived"), object: nil)
+                
             }
         }
-         
+        
         if self.isAdjust == 1
         {
             let environment = ADJEnvironmentProduction
@@ -85,23 +89,30 @@ public class MobiFlowSwift: NSObject
             
             adjustConfig?.sendInBackground = true
             adjustConfig?.delegate = self
-             
+            
             
             Adjust.appDidLaunch(adjustConfig)
-             
-            let mob_sdk_version = "1.3.2"
+            
+            let mob_sdk_version = "1.3.4"
             Adjust.addSessionCallbackParameter("mob_sdk_version", value: mob_sdk_version)
-            Adjust.addSessionCallbackParameter("user_uuid", value: self.generateUserUUID())
+            Adjust.addSessionCallbackParameter("user_uuid", value: generateUserUUID())
             Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
-           
+            
             let adjustEvent = ADJEvent(eventToken: adjEventToken)
             adjustEvent?.addCallbackParameter("eventValue", value: self.faid) //firebase Instance Id
-            adjustEvent?.addCallbackParameter("user_uuid", value: self.generateUserUUID())
+            adjustEvent?.addCallbackParameter("user_uuid", value: generateUserUUID())
             
             Adjust.trackEvent(adjustEvent)
-             
+            
         }
-
+        
+        if self.isAppmetrica != 1
+        {
+            self.onAppMetricaDeviceIDReceived()
+        }
+    }
+    
+    @objc private func onAppMetricaDeviceIDReceived(){
         if (endpoint != "") {
             let packageName = Bundle.main.bundleIdentifier ?? ""
             let apiString = "\(endpoint.hasPrefix("http") ? endpoint : "https://" + endpoint)?package=\(packageName)"
@@ -110,20 +121,19 @@ public class MobiFlowSwift: NSObject
             self.showNativeWithPermission(dic: [:])
         }
     }
-     
     
     private func checkIfEndPointAvailable(endPoint: String) {
         
         fetchDataWithUrl(urlString: endPoint) { response, isSuccess in
             if (isSuccess) {
                 if let endpoint = response?["cf"] as? String {
-                    print("endpoint: \(endpoint)")
+                    //print("endpoint: \(endpoint)")
                     if let delayTime = response?["second"] as? Int {
                         self.attributeTimerSleepSeconds = delayTime
                     }
                     
                     if (endpoint == "") {
-                        print("no endpoint found in json")
+                        // print("no endpoint found in json")
                         self.showNativeWithPermission(dic: [:])
                     } else {
                         self.endpoint = endpoint.hasPrefix("http") ? endpoint : "https://" + endpoint
@@ -132,45 +142,13 @@ public class MobiFlowSwift: NSObject
                         }
                     }
                 } else {
-                    print("no endpoint found in json")
+                    // print("no endpoint found in json")
                     self.showNativeWithPermission(dic: [:])
                 }
             } else {
-                print("failure in api")
+                // print("failure in api")
                 self.showNativeWithPermission(dic: [:])
             }
-        }
-    }
-    
-    private func fetchDataWithUrl(urlString: String, completionHendler:@escaping (_ response:Dictionary<String,AnyObject>?, _ success: Bool)-> Void) {
-        
-        if let url = URL(string: urlString) {
-            
-            var urlRequest = URLRequest(url: url)
-            urlRequest.cachePolicy = .reloadIgnoringLocalCacheData
-            urlRequest.timeoutInterval = 60
-            urlRequest.httpMethod = "GET"
-            urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-            urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
-            
-            let session = URLSession.shared
-            let task = session.dataTask(with: urlRequest, completionHandler: { data, response, error -> Void in
-                do {
-                    if (data == nil){
-                        completionHendler([:],false)
-                    } else {
-                        if let json = try JSONSerialization.jsonObject(with: data!) as? Dictionary<String, AnyObject> {
-                            completionHendler(json,true)
-                        } else {
-                            completionHendler([:],false)
-                        }
-                    }
-                } catch {
-                    completionHendler([:],false)
-                }
-            })
-            
-            task.resume()
         }
     }
     
@@ -179,6 +157,7 @@ public class MobiFlowSwift: NSObject
         if self.isDeeplinkURL == 0
         {
             self.startApp()
+            // add code here
         }
         else if self.isDeeplinkURL == 1
         {
@@ -186,27 +165,6 @@ public class MobiFlowSwift: NSObject
         }
     }
     
-    func requestPremission()
-    {
-        if #available(iOS 14, *)
-        {
-            ATTrackingManager.requestTrackingAuthorization { (authStatus) in
-                switch authStatus
-                {
-                case .notDetermined:
-                    print("Not Determined")
-                case .restricted:
-                    print("Restricted")
-                case .denied:
-                    print("Denied")
-                case .authorized:
-                    print("Authorized")
-                @unknown default:
-                    break
-                }
-            }
-        }
-    }
     
     @objc func updateCounting()
     {
@@ -263,7 +221,7 @@ public class MobiFlowSwift: NSObject
                 return (urlToOpen?.queryDictionary!["sName"] as? String)!
             }
         }
-
+        
         return ""
     }
     
@@ -272,60 +230,17 @@ public class MobiFlowSwift: NSObject
         return self.addressURL.removingPercentEncoding!
     }
     
-    private func generateUserUUID() -> String {
-        
-        var md5UUID = getUserUUID()
-        
-        if (md5UUID == "") {
-            var uuid = ""
-            let deviceId = UIDevice.current.identifierForVendor?.uuidString ?? ""
-            let customTimeStamp = currentTimeInMilliSeconds()
-            
-            uuid = deviceId + customTimeStamp
-            
-            md5UUID = uuid.md5()
-            saveUserUUID(value: md5UUID)
-        }
-        
-        return md5UUID
-    }
-    
-    private func getUserUUID() -> String {
-        return UserDefaults.standard.string(forKey: USERDEFAULT_CustomUUID) ?? ""
-    }
-    
-    private func saveUserUUID(value:String) {
-        return UserDefaults.standard.set(value, forKey: USERDEFAULT_CustomUUID)
-    }
-    
-    func currentTimeInMilliSeconds() -> String {
-        let currentDate = Date()
-        let since1970 = currentDate.timeIntervalSince1970
-        let intTimeStamp = Int(since1970 * 1000)
-        return "\(intTimeStamp)"
-    }
-    
-    func logEvent(eventName : String, log : String){
-        
-        let parameter = [
-            "parameter": log as NSObject
-        ]
-        
-        Analytics.logEvent(eventName, parameters: parameter)
-        
-    }
-
     
     func createParamsURL()
     {
         var components = URLComponents()
-         
+        
         let adjustAttributes = fetchAdjustAttributes()
         let encodedAdjustAttributes = adjustAttributes.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
         let encodedReferrerURL = self.referrerURL.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
-         
+        
         let gpsadid = ASIdentifierManager.shared().advertisingIdentifier.uuidString
-
+        
         components.queryItems = [
             URLQueryItem(name: "val1", value: generateUserUUID()),
             URLQueryItem(name: "val2", value: Bundle.main.bundleIdentifier ?? ""),
@@ -338,11 +253,11 @@ public class MobiFlowSwift: NSObject
         
         let customString =  self.endpoint  + (components.string ?? "")
         
-         //print("generated custom string : \(customString)")
+        //print("generated custom string : \(customString)")
         self.customURL = customString
-  
+        
     }
-      
+    
     private func fetchAdjustAttributes() -> String {
         let miliSeconds = UInt32(attributeTimerSleepSeconds)
         
@@ -376,7 +291,7 @@ public class MobiFlowSwift: NSObject
         webView.tintColor = self.tintColor
         webView.backgroundColor = self.backgroundColor
         webView.hideToolbar = self.hideToolbar
-
+        
         return webView
     }
     
@@ -385,18 +300,7 @@ public class MobiFlowSwift: NSObject
         let urlToOpen = URL(string: self.addressURL.removingPercentEncoding!)
         if (urlToOpen != nil)
         {
-            let frameworkBundle = Bundle(for: Self.self)
-            let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("MobFlowiOS.bundle")
-            let bundle = Bundle(url: bundleURL!)
-            let storyBoard = UIStoryboard(name: "Main", bundle:bundle)
-            let webView = storyBoard.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
-            webView.urlToOpen = urlToOpen!
-            webView.schemeURL = self.schemeURL
-            webView.addressURL = self.addressURL
-            webView.delegate = self
-            webView.tintColor = self.tintColor
-            webView.backgroundColor = self.backgroundColor
-            webView.hideToolbar = self.hideToolbar
+            guard let webView = getWebView() else { return }
             self.present(webView: webView)
         }
     }
@@ -418,7 +322,7 @@ public class MobiFlowSwift: NSObject
             webView.tintColor = self.tintColor
             webView.backgroundColor = self.backgroundColor
             webView.hideToolbar = self.hideToolbar
-
+            
             return webView
         }
         
@@ -432,7 +336,7 @@ public class MobiFlowSwift: NSObject
     }
     
     public func showNativeWithPermission(dic: [String : Any]) {
-        self.requestPremission()
+        requestPremission()
         self.delegate?.present(dic: dic)
     }
 }

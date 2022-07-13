@@ -13,7 +13,7 @@ extension MobiFlowSwift: WebViewControllerDelegate
 {
    func present(dic: [String : Any])
    {
-       self.requestPremission()
+    requestPremission()
        self.delegate?.present(dic: dic)
    }
    
