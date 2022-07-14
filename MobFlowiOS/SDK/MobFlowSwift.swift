@@ -85,15 +85,13 @@ public class MobiFlowSwift: NSObject
         {
             let environment = ADJEnvironmentProduction
             let adjustConfig = ADJConfig(appToken: self.adjAppToken, environment: environment)
-            
-            
+             
             adjustConfig?.sendInBackground = true
             adjustConfig?.delegate = self
-            
-            
+             
             Adjust.appDidLaunch(adjustConfig)
             
-            let mob_sdk_version = "1.3.8"
+            let mob_sdk_version = "1.3.9"
             Adjust.addSessionCallbackParameter("mob_sdk_version", value: mob_sdk_version)
             Adjust.addSessionCallbackParameter("user_uuid", value: generateUserUUID())
             Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
