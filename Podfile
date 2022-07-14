@@ -9,6 +9,7 @@ target 'MobFlowiOS' do
   pod 'Adjust'
   pod 'ReachabilitySwift'
   pod 'Firebase'
+  pod 'FirebaseAnalytics'
   pod 'FirebaseCrashlytics' 
   pod 'YandexMobileMetrica/Dynamic', '4.2.0'
 
