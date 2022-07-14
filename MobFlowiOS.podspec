@@ -24,7 +24,6 @@ Pod::Spec.new do |spec|
   spec.dependency 'ReachabilitySwift'
   spec.dependency 'Firebase'
   spec.dependency 'FirebaseAnalytics'
-  spec.dependency 'FirebaseMessaging'
   spec.dependency 'FirebaseCrashlytics'
   spec.dependency 'YandexMobileMetrica/Dynamic'
   spec.source_files  = "MobFlowiOS/**/*.{h,m,swift}"
