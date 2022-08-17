@@ -7,11 +7,10 @@ import YandexMobileMetrica
 
 public class MobiFlowSwift: NSObject
 {
-    var isAppmetrica = 0
-    var isAdjust = 0
-    var isDeeplinkURL = 0
-    var isUnityApp = 0
-    var scheme = ""
+    var isAppmetrica = false
+    var isAdjust = false
+    var isDeeplinkURL = false
+    var isUnityApp = false
     var endpoint = ""
     var adjAppToken = ""
     var appmetricaKey = ""
@@ -29,49 +28,58 @@ public class MobiFlowSwift: NSObject
     public var tintColor = UIColor.black
     public var hideToolbar = false
     var isShowingNotificationLayout = false
-    private var attributeTimerSleepSeconds = 5
+    private var attributeTimerSleepSeconds = 0
     let nc = NotificationCenter.default
     
     
-    @objc public init(isAppmetrica: Int, isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, adjEventToken: String,  appmetricaKey: String, initDelegate: MobiFlowDelegate, isUnityApp: Int)
+    @objc public init(initDelegate: MobiFlowDelegate, isUnityApp: Bool)
     {
         super.init()
-        
         self.isUnityApp = isUnityApp
         self.delegate = initDelegate
-        self.initialiseSDK(isAppmetrica: isAppmetrica,  isAdjust: isAdjust, isDeeplinkURL: isDeeplinkURL, scheme: scheme, endpoint: endpoint, adjAppToken: adjAppToken, adjEventToken: adjEventToken ,  appmetricaKey : appmetricaKey)
+        self.initialiseSDK()
     }
     
-    public init(isAppmetrica: Int , isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, adjEventToken: String,  appmetricaKey: String,  initDelegate: MobiFlowDelegate) {
+    public init(initDelegate: MobiFlowDelegate) {
         super.init()
         self.delegate = initDelegate
-        self.initialiseSDK(isAppmetrica: isAppmetrica,  isAdjust: isAdjust, isDeeplinkURL: isDeeplinkURL, scheme: scheme, endpoint: endpoint, adjAppToken: adjAppToken, adjEventToken: adjEventToken ,  appmetricaKey: appmetricaKey)
+        self.initialiseSDK()
     }
     
-    private func initialiseSDK(isAppmetrica : Int , isAdjust: Int, isDeeplinkURL: Int, scheme: String, endpoint: String, adjAppToken: String, adjEventToken: String,  appmetricaKey: String) {
+    private func initialiseSDK() {
         
-        self.isAppmetrica = isAppmetrica
-        self.isAdjust = isAdjust
-        self.isDeeplinkURL = isDeeplinkURL
-        self.scheme = scheme
-        self.adjAppToken = adjAppToken
-        self.appmetricaKey = appmetricaKey
-        self.endpoint = endpoint
-        self.adjEventToken = adjEventToken
         FirebaseApp.configure()
         
-        self.faid = Analytics.appInstanceID() ?? ""
+        if RCValues.sharedInstance.fetchComplete {}
         
+        RCValues.sharedInstance.loadingDoneCallback = getRC
+    }
+    
+    func getRC() {
+        
+        self.isAppmetrica = RCValues.sharedInstance.getAppmetrica().enabled
+        self.appmetricaKey = RCValues.sharedInstance.getAppmetrica().key
+        self.isAdjust = RCValues.sharedInstance.getAdjust().enabled
+        self.adjAppToken = RCValues.sharedInstance.getAdjust().appToken
+        self.adjEventToken =  RCValues.sharedInstance.getAdjust().appInstanceIDEventToken
+        self.isDeeplinkURL =   RCValues.sharedInstance.getDeeplink().adjustDeeplinkEnabled ||  RCValues.sharedInstance.getDeeplink().dynamicLinksEnabled
+        self.endpoint = RCValues.sharedInstance.string(forKey: .sub_endu)
+        
+        self.attributeTimerSleepSeconds = RCValues.sharedInstance.getAdjust().delay
+        
+        self.faid = Analytics.appInstanceID() ?? ""
         self.initialTrackingAndSetup()
     }
     
+    
     private func initialTrackingAndSetup() {
-         
-        if self.isAppmetrica == 1
+        
+        if self.isAppmetrica
         {
             nc.addObserver(self, selector: #selector(onAppMetricaDeviceIDReceived), name: Notification.Name("AppMetricaDeviceIDReceived"), object: nil)
-             
+            
             let configuration = YMMYandexMetricaConfiguration.init(apiKey: self.appmetricaKey)
+            configuration?.preloadInfo?.setAdditional(generateUserUUID(), forKey: "uuid")
             YMMYandexMetrica.activate(with: configuration!)
             
             YMMYandexMetrica.requestAppMetricaDeviceID(withCompletionQueue: .main) { [unowned self] id, error in
@@ -79,16 +87,17 @@ public class MobiFlowSwift: NSObject
                 nc.post(name: Notification.Name("AppMetricaDeviceIDReceived"), object: nil)
                 
             }
+            
         }
         
-        if self.isAdjust == 1
+        if self.isAdjust
         {
             let environment = ADJEnvironmentProduction
             let adjustConfig = ADJConfig(appToken: self.adjAppToken, environment: environment)
-             
+            
             adjustConfig?.sendInBackground = true
             adjustConfig?.delegate = self
-             
+            
             Adjust.appDidLaunch(adjustConfig)
             
             let mob_sdk_version = "1.4.3"
@@ -104,7 +113,7 @@ public class MobiFlowSwift: NSObject
             
         }
         
-        if self.isAppmetrica != 1
+        if !self.isAppmetrica
         {
             self.onAppMetricaDeviceIDReceived()
         }
@@ -121,45 +130,28 @@ public class MobiFlowSwift: NSObject
     }
     
     private func checkIfEndPointAvailable(endPoint: String) {
-        
-        fetchDataWithUrl(urlString: endPoint) { response, isSuccess in
-            if (isSuccess) {
-                if let endpoint = response?["cf"] as? String {
-                    //print("endpoint: \(endpoint)")
-                    if let delayTime = response?["second"] as? Int {
-                        self.attributeTimerSleepSeconds = delayTime
-                    }
-                    
-                    if (endpoint == "") {
-                        // print("no endpoint found in json")
-                        self.showNativeWithPermission(dic: [:])
-                    } else {
-                        self.endpoint = endpoint.hasPrefix("http") ? endpoint : "https://" + endpoint
-                        DispatchQueue.main.async {
-                            self.start()
-                        }
-                    }
-                } else {
-                    // print("no endpoint found in json")
-                    self.showNativeWithPermission(dic: [:])
-                }
-            } else {
-                // print("failure in api")
-                self.showNativeWithPermission(dic: [:])
+          
+        if (endpoint == "") {
+            // print("no endpoint found in json")
+            self.showNativeWithPermission(dic: [:])
+        } else {
+            self.endpoint = endpoint.hasPrefix("http") ? endpoint : "https://" + endpoint
+            DispatchQueue.main.async {
+                self.start()
             }
         }
+         
     }
-    
+ 
     @objc public func start()
     {
-        if self.isDeeplinkURL == 0
-        {
-            self.startApp()
-            // add code here
-        }
-        else if self.isDeeplinkURL == 1
+        if  self.isDeeplinkURL
         {
             timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateCounting), userInfo: nil, repeats: true)
+        }
+        else
+        {
+            self.startApp()
         }
     }
     
@@ -194,7 +186,7 @@ public class MobiFlowSwift: NSObject
     
     @objc public func showAds() -> Bool
     {
-        if self.isDeeplinkURL == 0
+        if !self.isDeeplinkURL
         {
             if self.addressURL.isEmpty
             {
@@ -240,13 +232,13 @@ public class MobiFlowSwift: NSObject
         let gpsadid = ASIdentifierManager.shared().advertisingIdentifier.uuidString
         
         components.queryItems = [
-            URLQueryItem(name: "val1", value: generateUserUUID()),
-            URLQueryItem(name: "val2", value: Bundle.main.bundleIdentifier ?? ""),
-            URLQueryItem(name: "val3", value: self.faid),
-            URLQueryItem(name: "val4", value: encodedAdjustAttributes ),
-            URLQueryItem(name: "val5", value: gpsadid),
-            URLQueryItem(name: "val6", value: encodedReferrerURL),
-            URLQueryItem(name: "val7", value: self.AppMetricaDeviceID)
+            URLQueryItem(name: "click_id", value: generateUserUUID()),
+            URLQueryItem(name: "package_id", value: Bundle.main.bundleIdentifier ?? ""),
+            URLQueryItem(name: "gps_adid", value: gpsadid),
+            URLQueryItem(name: "adjust_attribution", value: encodedAdjustAttributes ),
+            URLQueryItem(name: "referringLink", value: encodedReferrerURL),
+            URLQueryItem(name: "firebase_instance_id", value: self.faid),
+            URLQueryItem(name: "appmetrica_device_id", value: self.AppMetricaDeviceID)
         ]
         
         let customString =  self.endpoint  + (components.string ?? "")

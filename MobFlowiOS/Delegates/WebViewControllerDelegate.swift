@@ -31,7 +31,7 @@ extension MobiFlowSwift: WebViewControllerDelegate
                return
            }
            
-           if self.isDeeplinkURL == 0 || (self.isDeeplinkURL == 1 && UserDefaults.standard.object(forKey: "deeplinkURL") != nil)
+           if !self.isDeeplinkURL || (self.isDeeplinkURL  && UserDefaults.standard.object(forKey: "deeplinkURL") != nil)
            {
                if self.schemeURL.isEmpty
                {
