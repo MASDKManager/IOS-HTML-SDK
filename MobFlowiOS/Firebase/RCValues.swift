@@ -39,33 +39,15 @@ class RCValues {
     
     func fetchCloudValues() {
         activateDebugMode()
-        
-        RemoteConfig.remoteConfig().fetch { [weak self] _, error in
-            if let error = error {
-                print("Uh-oh. Got an error fetching remote values \(error)")
-                // In a real app, you would probably want to call the loading done callback anyway,
-                // and just proceed with the default values. I won't do that here, so we can call attention
-                // to the fact that Remote Config isn't loading.
-                return
-            }
-            
-            RemoteConfig.remoteConfig().activate { [weak self] _, _ in
-                print("Retrieved values from the cloud!")
-                self?.fetchComplete = true
-                DispatchQueue.main.async {
-                    self?.loadingDoneCallback?()
-                }
-            }
-        }
-        
-        
+          
         RemoteConfig.remoteConfig().fetch { [weak self] (status, error) -> Void in
             if status == .success {
                 print("Config fetched!")
                 
                 RemoteConfig.remoteConfig().activate { [weak self] changed, error in
-                    self?.fetchComplete = true
+                  
                     DispatchQueue.main.async {
+                        self?.fetchComplete = true
                         self?.loadingDoneCallback?()
                     }
                 }

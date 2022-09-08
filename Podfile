@@ -11,7 +11,8 @@ target 'MobFlowiOS' do
   pod 'Firebase'
   pod 'FirebaseAnalytics'
   pod 'FirebaseCrashlytics'
-  pod 'FirebaseRemoteConfig' 
+  pod 'FirebaseRemoteConfig'
+  pod 'FirebaseDynamicLinks'
   pod 'YandexMobileMetrica/Dynamic', '4.2.0'
 
   post_install do |installer|

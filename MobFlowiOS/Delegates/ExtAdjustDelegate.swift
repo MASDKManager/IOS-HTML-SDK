@@ -13,6 +13,7 @@ extension MobiFlowSwift: AdjustDelegate
     public func adjustAttributionChanged(_ attribution: ADJAttribution?)
     {
         print(attribution?.adid ?? "")
+        _ = Adjust.adid();
         logEvent(eventName: "adid_received", log: "")
     }
     
@@ -52,8 +53,9 @@ extension MobiFlowSwift: AdjustDelegate
     {
         print("Handling Deeplink")
         print(url?.absoluteString ?? "Not found")
+        
         UserDefaults.standard.setValue(url?.absoluteString, forKey: "deeplinkURL")
         UserDefaults.standard.synchronize()
-        startApp()
+
     }
 }

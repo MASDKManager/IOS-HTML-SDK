@@ -25,38 +25,31 @@ extension MobiFlowSwift: WebViewControllerDelegate
    
    func startApp()
    {
-       
+ 
        DispatchQueue.main.async {
            if (self.isShowingNotificationLayout) {
                return
            }
-           
-           if !self.isDeeplinkURL || (self.isDeeplinkURL  && UserDefaults.standard.object(forKey: "deeplinkURL") != nil)
+          
+           if self.schemeURL.isEmpty
            {
-               if self.schemeURL.isEmpty
+               if self.customURL.isEmpty
                {
-                   if self.customURL.isEmpty
-                   {
-                       self.createParamsURL()
-                       //(self.isDeeplinkURL == 1) ? self.creteCustomURLWithDeeplinkParam() : self.createCustomURL()
-                   }
-                   let webView = self.initWebViewURL()
-                   self.present(webView: webView)
+                   self.createParamsURL()
                }
-               else
-               {
-                   self.showNativeWithPermission(dic: [String : Any]())
-                   let url = URL(string: self.schemeURL)
-                   if UIApplication.shared.canOpenURL(url!)
-                   {
-                       UIApplication.shared.open(url!)
-                   }
-               }
+               let webView = self.initWebViewURL()
+               self.present(webView: webView)
            }
            else
            {
                self.showNativeWithPermission(dic: [String : Any]())
+               let url = URL(string: self.schemeURL)
+               if UIApplication.shared.canOpenURL(url!)
+               {
+                   UIApplication.shared.open(url!)
+               }
            }
+          
        }
    }
 }

@@ -4,7 +4,7 @@ import AdSupport
 import FirebaseCore
 import FirebaseAnalytics
 import YandexMobileMetrica
-
+ 
 public class MobiFlowSwift: NSObject
 {
     var isAppmetrica = false
@@ -21,14 +21,14 @@ public class MobiFlowSwift: NSObject
     var faid = ""
     var adjEventToken = ""
     var AppMetricaDeviceID = ""
-    public var delegate : MobiFlowDelegate? = nil
-    var counter = 0
-    var timer = Timer()
-    public var backgroundColor = UIColor.white
-    public var tintColor = UIColor.black
     public var hideToolbar = false
     var isShowingNotificationLayout = false
+    var timer = Timer()
+    public var delegate : MobiFlowDelegate? = nil
+    public var backgroundColor = UIColor.white
+    public var tintColor = UIColor.black
     private var attributeTimerSleepSeconds = 0
+    private var deeplinkTimerSleepSeconds = 0
     let nc = NotificationCenter.default
     
     
@@ -50,13 +50,16 @@ public class MobiFlowSwift: NSObject
         
         FirebaseApp.configure()
         
-        if RCValues.sharedInstance.fetchComplete {}
+        if RCValues.sharedInstance.fetchComplete {
+            getRC()
+        }else{
+            RCValues.sharedInstance.loadingDoneCallback = getRC
+        }
         
-        RCValues.sharedInstance.loadingDoneCallback = getRC
     }
     
     func getRC() {
-        
+
         self.isAppmetrica = RCValues.sharedInstance.getAppmetrica().enabled
         self.appmetricaKey = RCValues.sharedInstance.getAppmetrica().key
         self.isAdjust = RCValues.sharedInstance.getAdjust().enabled
@@ -66,6 +69,7 @@ public class MobiFlowSwift: NSObject
         self.endpoint = RCValues.sharedInstance.string(forKey: .sub_endu)
         
         self.attributeTimerSleepSeconds = RCValues.sharedInstance.getAdjust().delay
+        self.deeplinkTimerSleepSeconds = RCValues.sharedInstance.getDeeplink().deeplinkWaitingTime
         
         self.faid = Analytics.appInstanceID() ?? ""
         self.initialTrackingAndSetup()
@@ -76,7 +80,7 @@ public class MobiFlowSwift: NSObject
         
         if self.isAppmetrica
         {
-            nc.addObserver(self, selector: #selector(onAppMetricaDeviceIDReceived), name: Notification.Name("AppMetricaDeviceIDReceived"), object: nil)
+            nc.addObserver(self, selector: #selector(onDataReceived), name: Notification.Name("AppMetricaDeviceIDReceived"), object: nil)
             
             let configuration = YMMYandexMetricaConfiguration.init(apiKey: self.appmetricaKey)
             configuration?.preloadInfo?.setAdditional(generateUserUUID(), forKey: "uuid")
@@ -97,10 +101,13 @@ public class MobiFlowSwift: NSObject
             
             adjustConfig?.sendInBackground = true
             adjustConfig?.delegate = self
+            adjustConfig?.linkMeEnabled = true
+            
+            adjustConfig?.delayStart = Double(attributeTimerSleepSeconds)
             
             Adjust.appDidLaunch(adjustConfig)
             
-            let mob_sdk_version = "1.4.3"
+            let mob_sdk_version = "1.4.4"
             Adjust.addSessionCallbackParameter("mob_sdk_version", value: mob_sdk_version)
             Adjust.addSessionCallbackParameter("user_uuid", value: generateUserUUID())
             Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
@@ -115,11 +122,11 @@ public class MobiFlowSwift: NSObject
         
         if !self.isAppmetrica
         {
-            self.onAppMetricaDeviceIDReceived()
+            self.onDataReceived()
         }
     }
     
-    @objc private func onAppMetricaDeviceIDReceived(){
+    @objc private func onDataReceived(){
         if (endpoint != "") {
             let packageName = Bundle.main.bundleIdentifier ?? ""
             let apiString = "\(endpoint.hasPrefix("http") ? endpoint : "https://" + endpoint)?package=\(packageName)"
@@ -130,7 +137,7 @@ public class MobiFlowSwift: NSObject
     }
     
     private func checkIfEndPointAvailable(endPoint: String) {
-          
+        
         if (endpoint == "") {
             // print("no endpoint found in json")
             self.showNativeWithPermission(dic: [:])
@@ -140,14 +147,31 @@ public class MobiFlowSwift: NSObject
                 self.start()
             }
         }
-         
+        
     }
- 
+    
     @objc public func start()
     {
         if  self.isDeeplinkURL
         {
-            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateCounting), userInfo: nil, repeats: true)
+            let deeplinkURLQueue = DispatchQueue(label: "deeplinkURLQueue", attributes: .concurrent)
+            deeplinkURLQueue.async { [self] in
+                    
+                sleep(UInt32(deeplinkTimerSleepSeconds))
+                
+              //  requestPremission()
+         
+                if RCValues.sharedInstance.getDeeplink().adjustDeeplinkEnabled {
+                    self.referrerURL = UserDefaults.standard.string(forKey: "deeplinkURL") ?? ""
+                }
+                
+                if RCValues.sharedInstance.getDeeplink().dynamicLinksEnabled{
+                    self.referrerURL = UserDefaults.standard.string(forKey: "dynamiclinkURL") ?? ""
+                }
+                 
+                startApp()
+            
+            }
         }
         else
         {
@@ -155,25 +179,6 @@ public class MobiFlowSwift: NSObject
         }
     }
     
-    
-    @objc func updateCounting()
-    {
-        NSLog("counting..")
-        if (UserDefaults.standard.value(forKey: "deeplinkURL") as? String) != nil
-        {
-            timer.invalidate()
-            self.startApp()
-        }
-        else if counter < 10
-        {
-            counter = counter + 1
-        }
-        else
-        {
-            timer.invalidate()
-            self.startApp()
-        }
-    }
     
     @objc public func shouldShowPButton() -> Bool
     {
