@@ -6,8 +6,8 @@ import FirebaseAnalytics
 import YandexMobileMetrica
  
 public class MobiFlowSwift: NSObject
-{ 
-    let mob_sdk_version = "1.4.8"
+{
+    let mob_sdk_version = "1.5.0"
     var isAppmetrica = false
     var isAdjust = false
     var isDeeplinkURL = false
