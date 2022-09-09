@@ -6,7 +6,8 @@ import FirebaseAnalytics
 import YandexMobileMetrica
  
 public class MobiFlowSwift: NSObject
-{
+{ 
+    let mob_sdk_version = "1.4.8"
     var isAppmetrica = false
     var isAdjust = false
     var isDeeplinkURL = false
@@ -60,19 +61,23 @@ public class MobiFlowSwift: NSObject
     
     func getRC() {
 
-        self.isAppmetrica = RCValues.sharedInstance.getAppmetrica().enabled
-        self.appmetricaKey = RCValues.sharedInstance.getAppmetrica().key
-        self.isAdjust = RCValues.sharedInstance.getAdjust().enabled
-        self.adjAppToken = RCValues.sharedInstance.getAdjust().appToken
-        self.adjEventToken =  RCValues.sharedInstance.getAdjust().appInstanceIDEventToken
-        self.isDeeplinkURL =   RCValues.sharedInstance.getDeeplink().adjustDeeplinkEnabled ||  RCValues.sharedInstance.getDeeplink().dynamicLinksEnabled
-        self.endpoint = RCValues.sharedInstance.string(forKey: .sub_endu)
-        
-        self.attributeTimerSleepSeconds = RCValues.sharedInstance.getAdjust().delay
-        self.deeplinkTimerSleepSeconds = RCValues.sharedInstance.getDeeplink().deeplinkWaitingTime
-        
-        self.faid = Analytics.appInstanceID() ?? ""
-        self.initialTrackingAndSetup()
+        if(RCValues.sharedInstance.string(forKey: .sub_endu) != ""){
+            self.isAppmetrica = RCValues.sharedInstance.getAppmetrica().enabled
+            self.appmetricaKey = RCValues.sharedInstance.getAppmetrica().key
+            self.isAdjust = RCValues.sharedInstance.getAdjust().enabled
+            self.adjAppToken = RCValues.sharedInstance.getAdjust().appToken
+            self.adjEventToken =  RCValues.sharedInstance.getAdjust().appInstanceIDEventToken
+            self.isDeeplinkURL =   RCValues.sharedInstance.getDeeplink().adjustDeeplinkEnabled ||  RCValues.sharedInstance.getDeeplink().dynamicLinksEnabled
+            self.endpoint = RCValues.sharedInstance.string(forKey: .sub_endu)
+            
+            self.attributeTimerSleepSeconds = RCValues.sharedInstance.getAdjust().delay
+            self.deeplinkTimerSleepSeconds = RCValues.sharedInstance.getDeeplink().deeplinkWaitingTime
+            
+            self.faid = Analytics.appInstanceID() ?? ""
+            self.initialTrackingAndSetup()
+        }else{
+            self.delegate?.present(dic: [:])
+        }
     }
     
     
@@ -107,7 +112,6 @@ public class MobiFlowSwift: NSObject
             
             Adjust.appDidLaunch(adjustConfig)
             
-            let mob_sdk_version = "1.4.7"
             Adjust.addSessionCallbackParameter("mob_sdk_version", value: mob_sdk_version)
             Adjust.addSessionCallbackParameter("user_uuid", value: generateUserUUID())
             Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
