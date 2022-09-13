@@ -9,10 +9,9 @@ import Foundation
 import AppTrackingTransparency
 import FirebaseCore
 import FirebaseAnalytics
-  
-let USERDEFAULT_CustomUUID = "USERDEFAULT_CustomUUID"
-let USERDEFAULT_DidWaitForAdjustAttribute = "USERDEFAULT_DidWaitForAdjustAttribute"
 
+let USERDEFAULT_CustomUUID = "USERDEFAULT_CustomUUID"
+ 
 func currentTimeInMilliSeconds() -> String {
     let currentDate = Date()
     let since1970 = currentDate.timeIntervalSince1970
@@ -56,21 +55,24 @@ func requestPremission()
 {
     if #available(iOS 14, *)
     {
-        ATTrackingManager.requestTrackingAuthorization { (authStatus) in
-            switch authStatus
-            {
-            case .notDetermined:
-                print("Not Determined")
-            case .restricted:
-                print("Restricted")
-            case .denied:
-                print("Denied")
-            case .authorized:
-                print("Authorized")
-            @unknown default:
-                break
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+            
+            ATTrackingManager.requestTrackingAuthorization { (authStatus) in
+                switch authStatus
+                {
+                case .notDetermined:
+                    print("Not Determined")
+                case .restricted:
+                    print("Restricted")
+                case .denied:
+                    print("Denied")
+                case .authorized:
+                    print("Authorized")
+                @unknown default:
+                    break
+                }
             }
-        }
+        })
     }
 }
 

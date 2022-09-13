@@ -7,20 +7,21 @@ import YandexMobileMetrica
  
 public class MobiFlowSwift: NSObject
 {
-    let mob_sdk_version = "1.5.0"
+    
+    let mob_sdk_version = "1.4.8"
     var isAppmetrica = false
-    var isAdjust = false
     var isDeeplinkURL = false
     var isUnityApp = false
     var endpoint = ""
-    var adjAppToken = ""
+    var rcAdjust : RCAdjust!
     var appmetricaKey = ""
     var referrerURL = ""
     var customURL = ""
     var schemeURL = ""
     var addressURL = ""
     var faid = ""
-    var adjEventToken = ""
+    var params = ""
+    var delay = 0.0
     var AppMetricaDeviceID = ""
     public var hideToolbar = false
     var isShowingNotificationLayout = false
@@ -28,8 +29,7 @@ public class MobiFlowSwift: NSObject
     public var delegate : MobiFlowDelegate? = nil
     public var backgroundColor = UIColor.white
     public var tintColor = UIColor.black
-    private var attributeTimerSleepSeconds = 0
-    private var deeplinkTimerSleepSeconds = 0
+ 
     let nc = NotificationCenter.default
     
     
@@ -64,15 +64,13 @@ public class MobiFlowSwift: NSObject
         if(RCValues.sharedInstance.string(forKey: .sub_endu) != ""){
             self.isAppmetrica = RCValues.sharedInstance.getAppmetrica().enabled
             self.appmetricaKey = RCValues.sharedInstance.getAppmetrica().key
-            self.isAdjust = RCValues.sharedInstance.getAdjust().enabled
-            self.adjAppToken = RCValues.sharedInstance.getAdjust().appToken
-            self.adjEventToken =  RCValues.sharedInstance.getAdjust().appInstanceIDEventToken
+            self.rcAdjust = RCValues.sharedInstance.getAdjust()
             self.isDeeplinkURL =   RCValues.sharedInstance.getDeeplink().adjustDeeplinkEnabled ||  RCValues.sharedInstance.getDeeplink().dynamicLinksEnabled
             self.endpoint = RCValues.sharedInstance.string(forKey: .sub_endu)
-            
-            self.attributeTimerSleepSeconds = RCValues.sharedInstance.getAdjust().delay
-            self.deeplinkTimerSleepSeconds = RCValues.sharedInstance.getDeeplink().deeplinkWaitingTime
-            
+            self.params = RCValues.sharedInstance.string(forKey: .params)
+             
+            self.delay = RCValues.sharedInstance.double(forKey: .delay)
+             
             self.faid = Analytics.appInstanceID() ?? ""
             self.initialTrackingAndSetup()
         }else{
@@ -99,26 +97,26 @@ public class MobiFlowSwift: NSObject
             
         }
         
-        if self.isAdjust
+        if self.rcAdjust.enabled
         {
-            let environment = ADJEnvironmentProduction
-            let adjustConfig = ADJConfig(appToken: self.adjAppToken, environment: environment)
+         
+            let adjustConfig = ADJConfig(appToken: self.rcAdjust.appToken, environment: ADJEnvironmentProduction)
             
             adjustConfig?.sendInBackground = true
             adjustConfig?.delegate = self
             adjustConfig?.linkMeEnabled = true
             
-            adjustConfig?.delayStart = Double(attributeTimerSleepSeconds)
+            adjustConfig?.delayStart = Double(self.rcAdjust.callbackDelay)
             
             Adjust.appDidLaunch(adjustConfig)
             
-            Adjust.addSessionCallbackParameter("mob_sdk_version", value: mob_sdk_version)
-            Adjust.addSessionCallbackParameter("user_uuid", value: generateUserUUID())
-            Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", value: self.faid)
+            Adjust.addSessionCallbackParameter("m_sdk_ver", value: mob_sdk_version)
+            Adjust.addSessionCallbackParameter("click_id", value: generateUserUUID())
+            Adjust.addSessionCallbackParameter("firebase_instance_id", value: self.faid)
             
-            let adjustEvent = ADJEvent(eventToken: adjEventToken)
+            let adjustEvent = ADJEvent(eventToken: self.rcAdjust.appInstanceIDEventToken)
             adjustEvent?.addCallbackParameter("eventValue", value: self.faid) //firebase Instance Id
-            adjustEvent?.addCallbackParameter("user_uuid", value: generateUserUUID())
+            adjustEvent?.addCallbackParameter("click_id", value: generateUserUUID())
             
             Adjust.trackEvent(adjustEvent)
             
@@ -156,15 +154,15 @@ public class MobiFlowSwift: NSObject
     
     @objc public func start()
     {
-        if  self.isDeeplinkURL
-        {
-            let deeplinkURLQueue = DispatchQueue(label: "deeplinkURLQueue", attributes: .concurrent)
-            deeplinkURLQueue.async { [self] in
-                    
-                sleep(UInt32(deeplinkTimerSleepSeconds))
+   
+        let deeplinkURLQueue = DispatchQueue(label: "deeplinkURLQueue", attributes: .concurrent)
+        deeplinkURLQueue.async { [self] in
                 
-              //  requestPremission()
-         
+            sleep(UInt32(delay))
+            
+            if  self.isDeeplinkURL
+            {
+     
                 if RCValues.sharedInstance.getDeeplink().adjustDeeplinkEnabled {
                     self.referrerURL = UserDefaults.standard.string(forKey: "deeplinkURL") ?? ""
                 }
@@ -172,15 +170,12 @@ public class MobiFlowSwift: NSObject
                 if RCValues.sharedInstance.getDeeplink().dynamicLinksEnabled{
                     self.referrerURL = UserDefaults.standard.string(forKey: "dynamiclinkURL") ?? ""
                 }
-                 
-                startApp()
-            
             }
+             
+            startApp()
+        
         }
-        else
-        {
-            self.startApp()
-        }
+      
     }
     
     
@@ -232,48 +227,34 @@ public class MobiFlowSwift: NSObject
     
     func createParamsURL()
     {
-        var components = URLComponents()
-        
-        let adjustAttributes = fetchAdjustAttributes()
+       
+        let adjustAttributes = Adjust.attribution()?.description ?? ""
         let encodedAdjustAttributes = adjustAttributes.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
         let encodedReferrerURL = self.referrerURL.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
         
-        let gpsadid = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+        let idfa = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+        let idfv = UIDevice.current.identifierForVendor!.uuidString
+         
+        let paramsQuery = self.params
+                            .replacingOccurrences(of: "$adjust_campaign_name", with: Adjust.attribution()?.campaign ?? "")
+                            .replacingOccurrences(of: "$idfa", with: idfa)
+                            .replacingOccurrences(of: "$idfv", with: idfv)
+                            .replacingOccurrences(of: "$adjust_id", with: Adjust.adid() ?? "")
+                            .replacingOccurrences(of: "$deeplink", with: encodedReferrerURL)
+                            .replacingOccurrences(of: "$firebase_instance_id", with: self.faid)
+                            .replacingOccurrences(of: "$package", with: Bundle.main.bundleIdentifier ?? "")
+                            .replacingOccurrences(of: "$click_id", with: generateUserUUID())
+                            .replacingOccurrences(of: "$adjust_attribution", with: encodedAdjustAttributes)
+                            .replacingOccurrences(of: "$appmetrica_device_id", with: self.AppMetricaDeviceID)
         
-        components.queryItems = [
-            URLQueryItem(name: "click_id", value: generateUserUUID()),
-            URLQueryItem(name: "package_id", value: Bundle.main.bundleIdentifier ?? ""),
-            URLQueryItem(name: "gps_adid", value: gpsadid),
-            URLQueryItem(name: "adjust_attribution", value: encodedAdjustAttributes ),
-            URLQueryItem(name: "referringLink", value: encodedReferrerURL),
-            URLQueryItem(name: "firebase_instance_id", value: self.faid),
-            URLQueryItem(name: "appmetrica_device_id", value: self.AppMetricaDeviceID)
-        ]
+        let customString =  self.endpoint + "/?"  + paramsQuery
         
-        let customString =  self.endpoint  + (components.string ?? "")
+      //  print("generated custom string : \(customString)")
         
-        //print("generated custom string : \(customString)")
         self.customURL = customString
         
     }
-    
-    private func fetchAdjustAttributes() -> String {
-        let miliSeconds = UInt32(attributeTimerSleepSeconds)
-        
-        if (!UserDefaults.standard.bool(forKey: USERDEFAULT_DidWaitForAdjustAttribute)) {
-            //only call sleep for the first time
-            sleep(miliSeconds)
-        }
-        
-        let adjustAttributes = Adjust.attribution()?.description ?? ""
-        
-        if (adjustAttributes != "") {
-            //setting userdefault value to true only if adjust Attributes are not empty
-            UserDefaults.standard.set(true, forKey: USERDEFAULT_DidWaitForAdjustAttribute)
-        }
-        
-        return adjustAttributes
-    }
+     
     
     func initWebViewURL() -> WebViewController
     {

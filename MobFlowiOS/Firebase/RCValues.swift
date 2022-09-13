@@ -14,6 +14,8 @@ enum ValueKey: String {
     case adjst
     case appmetrica
     case deeplink
+    case params
+    case delay
 }
 
 class RCValues {
@@ -32,7 +34,9 @@ class RCValues {
             ValueKey.sub_endu.rawValue: "",
             ValueKey.adjst.rawValue: "",
             ValueKey.appmetrica.rawValue: "",
-            ValueKey.deeplink.rawValue: ""
+            ValueKey.deeplink.rawValue: "",
+            ValueKey.params.rawValue: "",
+            ValueKey.delay.rawValue: 0.0
         ]
         RemoteConfig.remoteConfig().setDefaults(appDefaults as? [String: NSObject])
     }

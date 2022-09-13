@@ -9,7 +9,6 @@ import Foundation
 
 // MARK: - Deeplink
 struct Deeplink  : Codable {
-    let deeplinkWaitingTime: Int
     let adjustDeeplinkEnabled: Bool
     let dynamicLinksEnabled: Bool
 }
@@ -25,6 +24,5 @@ struct RCAdjust : Codable {
     let enabled: Bool
     let appToken: String
     let appInstanceIDEventToken: String
-    let delay: Int
     let callbackDelay: Int
 }
