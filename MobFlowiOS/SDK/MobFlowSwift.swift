@@ -8,7 +8,7 @@ import YandexMobileMetrica
 public class MobiFlowSwift: NSObject
 {
     
-    let mob_sdk_version = "1.4.8"
+    let mob_sdk_version = "1.5.1"
     var isAppmetrica = false
     var isDeeplinkURL = false
     var isUnityApp = false
