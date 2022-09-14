@@ -20,7 +20,6 @@
 		180B9B0C273BC4B200B19CA4 /* NotificationLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180B9B0B273BC4B200B19CA4 /* NotificationLayout.swift */; };
 		1867FB75274CEC8000A65248 /* LearnMoreWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1867FB74274CEC8000A65248 /* LearnMoreWebViewController.swift */; };
 		18B70C8627462C640003F67F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B70C8527462C640003F67F /* Extensions.swift */; };
-		8F3A183814EF57DD31977413 /* Pods_MobFlowiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC6799E605C3567F1BFECAED /* Pods_MobFlowiOS.framework */; };
 		AC9056C3260DD3E30084E14F /* MobFlowiOS.h in Headers */ = {isa = PBXBuildFile; fileRef = AC9056C1260DD3E30084E14F /* MobFlowiOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AC9056DD260DD6C80084E14F /* NoInternetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9056DA260DD6C70084E14F /* NoInternetViewController.swift */; };
 		AC9056DE260DD6C80084E14F /* MobFlowSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9056DB260DD6C70084E14F /* MobFlowSwift.swift */; };
@@ -44,7 +43,6 @@
 		180B9B0B273BC4B200B19CA4 /* NotificationLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationLayout.swift; sourceTree = "<group>"; };
 		1867FB74274CEC8000A65248 /* LearnMoreWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LearnMoreWebViewController.swift; sourceTree = "<group>"; };
 		18B70C8527462C640003F67F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = ../SDK/Extensions.swift; sourceTree = "<group>"; };
-		9E04B6D01C0433BA21015ABE /* Pods-MobFlowiOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobFlowiOS.debug.xcconfig"; path = "Target Support Files/Pods-MobFlowiOS/Pods-MobFlowiOS.debug.xcconfig"; sourceTree = "<group>"; };
 		AC9056BE260DD3E30084E14F /* MobFlowiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MobFlowiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC9056C1260DD3E30084E14F /* MobFlowiOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MobFlowiOS.h; sourceTree = "<group>"; };
 		AC9056C2260DD3E30084E14F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -54,8 +52,6 @@
 		AC9056E1260DD6E90084E14F /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
 		AC9056E2260DD6E90084E14F /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		AC9056F5260DD74B0084E14F /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
-		F8A70BA5E9CE3B4D998CE425 /* Pods-MobFlowiOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobFlowiOS.release.xcconfig"; path = "Target Support Files/Pods-MobFlowiOS/Pods-MobFlowiOS.release.xcconfig"; sourceTree = "<group>"; };
-		FC6799E605C3567F1BFECAED /* Pods_MobFlowiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MobFlowiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +59,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8F3A183814EF57DD31977413 /* Pods_MobFlowiOS.framework in Frameworks */,
 				0D7792C8288173C1009936AB /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -132,8 +127,6 @@
 		911FA9A17973379AF806AB87 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				9E04B6D01C0433BA21015ABE /* Pods-MobFlowiOS.debug.xcconfig */,
-				F8A70BA5E9CE3B4D998CE425 /* Pods-MobFlowiOS.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -177,7 +170,6 @@
 			isa = PBXGroup;
 			children = (
 				0D7792C7288173C1009936AB /* StoreKit.framework */,
-				FC6799E605C3567F1BFECAED /* Pods_MobFlowiOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -200,7 +192,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AC9056C6260DD3E30084E14F /* Build configuration list for PBXNativeTarget "MobFlowiOS" */;
 			buildPhases = (
-				0D1A1440C0BFCBB2569B0EB7 /* [CP] Check Pods Manifest.lock */,
 				AC9056B9260DD3E30084E14F /* Headers */,
 				AC9056BA260DD3E30084E14F /* Sources */,
 				AC9056BB260DD3E30084E14F /* Frameworks */,
@@ -259,31 +250,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		0D1A1440C0BFCBB2569B0EB7 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MobFlowiOS-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AC9056BA260DD3E30084E14F /* Sources */ = {
@@ -440,7 +406,6 @@
 		};
 		AC9056C7260DD3E30084E14F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9E04B6D01C0433BA21015ABE /* Pods-MobFlowiOS.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -493,7 +458,6 @@
 		};
 		AC9056C8260DD3E30084E14F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F8A70BA5E9CE3B4D998CE425 /* Pods-MobFlowiOS.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
