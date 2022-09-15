@@ -8,7 +8,7 @@ import YandexMobileMetrica
 public class MobiFlowSwift: NSObject
 {
     
-    let mob_sdk_version = "1.5.4"
+    let mob_sdk_version = "1.5.5"
     var isAppmetrica = false
     var isDeeplinkURL = false
     var isUnityApp = false
@@ -316,7 +316,7 @@ public class MobiFlowSwift: NSObject
     }
     
     public func showNativeWithPermission(dic: [String : Any]) {
-        requestPremission()
         self.delegate?.present(dic: dic)
+        requestPremission()
     }
 }
