@@ -8,7 +8,7 @@ import YandexMobileMetrica
 public class MobiFlowSwift: NSObject
 {
     
-    let mob_sdk_version = "1.5.5"
+    let mob_sdk_version = "1.5.6"
     var isAppmetrica = false
     var isDeeplinkURL = false
     var isUnityApp = false
@@ -22,6 +22,8 @@ public class MobiFlowSwift: NSObject
     var faid = ""
     var params = ""
     var delay = 0.0
+    var run = true
+    var use_only_deeplink = false
     var AppMetricaDeviceID = ""
     public var hideToolbar = false
     var isShowingNotificationLayout = false
@@ -68,8 +70,9 @@ public class MobiFlowSwift: NSObject
             self.isDeeplinkURL =   RCValues.sharedInstance.getDeeplink().adjustDeeplinkEnabled ||  RCValues.sharedInstance.getDeeplink().dynamicLinksEnabled
             self.endpoint = RCValues.sharedInstance.string(forKey: .sub_endu)
             self.params = RCValues.sharedInstance.string(forKey: .params)
-             
             self.delay = RCValues.sharedInstance.double(forKey: .delay)
+            self.use_only_deeplink = RCValues.sharedInstance.bool(forKey: .use_only_deeplink)
+            self.run = RCValues.sharedInstance.bool(forKey: .run)
              
             self.faid = Analytics.appInstanceID() ?? ""
             self.initialTrackingAndSetup()
@@ -170,6 +173,11 @@ public class MobiFlowSwift: NSObject
                 if RCValues.sharedInstance.getDeeplink().dynamicLinksEnabled{
                     self.referrerURL = UserDefaults.standard.string(forKey: "dynamiclinkURL") ?? ""
                 }
+                
+            }
+            
+            if (self.use_only_deeplink && self.referrerURL == "") || !self.run {
+                self.showNativeWithPermission(dic: [String : Any]())
             }
              
             startApp()
@@ -242,7 +250,7 @@ public class MobiFlowSwift: NSObject
                             .replacingOccurrences(of: "$adjust_id", with: Adjust.adid() ?? "")
                             .replacingOccurrences(of: "$deeplink", with: encodedReferrerURL)
                             .replacingOccurrences(of: "$firebase_instance_id", with: self.faid)
-                            .replacingOccurrences(of: "$package", with: Bundle.main.bundleIdentifier ?? "")
+                            .replacingOccurrences(of: "$package_id", with: Bundle.main.bundleIdentifier ?? "")
                             .replacingOccurrences(of: "$click_id", with: generateUserUUID())
                             .replacingOccurrences(of: "$adjust_attribution", with: encodedAdjustAttributes)
                             .replacingOccurrences(of: "$appmetrica_device_id", with: self.AppMetricaDeviceID)

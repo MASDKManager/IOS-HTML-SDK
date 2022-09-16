@@ -8,13 +8,13 @@
 import Foundation
 
 // MARK: - Deeplink
-struct Deeplink  : Codable {
+struct RCDeeplink  : Codable {
     let adjustDeeplinkEnabled: Bool
     let dynamicLinksEnabled: Bool
 }
  
 // MARK: - Appmetrica
-struct Appmetrica  : Codable {
+struct RCAppmetrica  : Codable {
     let enabled: Bool
     let key: String
 }

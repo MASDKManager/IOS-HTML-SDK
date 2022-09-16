@@ -15,7 +15,7 @@
 		0DBA546B2875C12F00A599FA /* ExtAdjustDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA54662875C12E00A599FA /* ExtAdjustDelegate.swift */; };
 		0DBA546C2875C12F00A599FA /* WebViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA54672875C12E00A599FA /* WebViewControllerDelegate.swift */; };
 		0DBA54722875CE5A00A599FA /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBA54712875CE5A00A599FA /* Functions.swift */; };
-		0DDFBEE728ACE56F0013FBEE /* RCValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDFBEE628ACE56F0013FBEE /* RCValues.swift */; };
+		0DDFBEE728ACE56F0013FBEE /* RCFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDFBEE628ACE56F0013FBEE /* RCFirebase.swift */; };
 		0DDFBEED28ACFD650013FBEE /* RCModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDFBEEC28ACFD650013FBEE /* RCModels.swift */; };
 		180B9B0C273BC4B200B19CA4 /* NotificationLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180B9B0B273BC4B200B19CA4 /* NotificationLayout.swift */; };
 		1867FB75274CEC8000A65248 /* LearnMoreWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1867FB74274CEC8000A65248 /* LearnMoreWebViewController.swift */; };
@@ -31,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		054FB5A01EC99EDC6C7787A1 /* Pods-MobFlowiOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobFlowiOS.release.xcconfig"; path = "Target Support Files/Pods-MobFlowiOS/Pods-MobFlowiOS.release.xcconfig"; sourceTree = "<group>"; };
 		0D7792C7288173C1009936AB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0DBA545D2875854F00A599FA /* NotificationDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDataManager.swift; sourceTree = "<group>"; };
 		0DBA54632875C12E00A599FA /* ExtNotificationLayoutDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtNotificationLayoutDelegate.swift; sourceTree = "<group>"; };
@@ -39,13 +40,12 @@
 		0DBA54662875C12E00A599FA /* ExtAdjustDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtAdjustDelegate.swift; sourceTree = "<group>"; };
 		0DBA54672875C12E00A599FA /* WebViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewControllerDelegate.swift; sourceTree = "<group>"; };
 		0DBA54712875CE5A00A599FA /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
-		0DDFBEE628ACE56F0013FBEE /* RCValues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCValues.swift; sourceTree = "<group>"; };
+		0DDFBEE628ACE56F0013FBEE /* RCFirebase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCFirebase.swift; sourceTree = "<group>"; };
 		0DDFBEEC28ACFD650013FBEE /* RCModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCModels.swift; sourceTree = "<group>"; };
 		180B9B0B273BC4B200B19CA4 /* NotificationLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationLayout.swift; sourceTree = "<group>"; };
 		1867FB74274CEC8000A65248 /* LearnMoreWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LearnMoreWebViewController.swift; sourceTree = "<group>"; };
 		18B70C8527462C640003F67F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = ../SDK/Extensions.swift; sourceTree = "<group>"; };
-		7C44B6EC2153398C404C1A8D /* Pods-MobFlowiOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobFlowiOS.debug.xcconfig"; path = "Target Support Files/Pods-MobFlowiOS/Pods-MobFlowiOS.debug.xcconfig"; sourceTree = "<group>"; };
-		855E95FA056E7A22F9AF963D /* Pods-MobFlowiOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobFlowiOS.release.xcconfig"; path = "Target Support Files/Pods-MobFlowiOS/Pods-MobFlowiOS.release.xcconfig"; sourceTree = "<group>"; };
+		A07B0D5BD1CB4CF60674519B /* Pods-MobFlowiOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobFlowiOS.debug.xcconfig"; path = "Target Support Files/Pods-MobFlowiOS/Pods-MobFlowiOS.debug.xcconfig"; sourceTree = "<group>"; };
 		AC9056BE260DD3E30084E14F /* MobFlowiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MobFlowiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC9056C1260DD3E30084E14F /* MobFlowiOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MobFlowiOS.h; sourceTree = "<group>"; };
 		AC9056C2260DD3E30084E14F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -123,19 +123,10 @@
 		0DDFBEE328ACDA440013FBEE /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
-				0DDFBEE628ACE56F0013FBEE /* RCValues.swift */,
+				0DDFBEE628ACE56F0013FBEE /* RCFirebase.swift */,
 				0DDFBEEC28ACFD650013FBEE /* RCModels.swift */,
 			);
 			path = Firebase;
-			sourceTree = "<group>";
-		};
-		911FA9A17973379AF806AB87 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				7C44B6EC2153398C404C1A8D /* Pods-MobFlowiOS.debug.xcconfig */,
-				855E95FA056E7A22F9AF963D /* Pods-MobFlowiOS.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		AC9056B4260DD3E30084E14F = {
@@ -143,8 +134,8 @@
 			children = (
 				AC9056C0260DD3E30084E14F /* MobFlowiOS */,
 				AC9056BF260DD3E30084E14F /* Products */,
-				911FA9A17973379AF806AB87 /* Pods */,
 				CF540FA7656CAE6FBA99A935 /* Frameworks */,
+				D7BF5A99212F1F40B58FB890 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -180,6 +171,16 @@
 				D4EB2CFDD0C6D2DD359CC269 /* Pods_MobFlowiOS.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D7BF5A99212F1F40B58FB890 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A07B0D5BD1CB4CF60674519B /* Pods-MobFlowiOS.debug.xcconfig */,
+				054FB5A01EC99EDC6C7787A1 /* Pods-MobFlowiOS.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -301,7 +302,7 @@
 				0DBA54692875C12F00A599FA /* UIApplicationDelegate.swift in Sources */,
 				1867FB75274CEC8000A65248 /* LearnMoreWebViewController.swift in Sources */,
 				0DBA54682875C12E00A599FA /* ExtNotificationLayoutDelegate.swift in Sources */,
-				0DDFBEE728ACE56F0013FBEE /* RCValues.swift in Sources */,
+				0DDFBEE728ACE56F0013FBEE /* RCFirebase.swift in Sources */,
 				0DBA546C2875C12F00A599FA /* WebViewControllerDelegate.swift in Sources */,
 				AC9056DD260DD6C80084E14F /* NoInternetViewController.swift in Sources */,
 				0DDFBEED28ACFD650013FBEE /* RCModels.swift in Sources */,
@@ -440,7 +441,7 @@
 		};
 		AC9056C7260DD3E30084E14F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7C44B6EC2153398C404C1A8D /* Pods-MobFlowiOS.debug.xcconfig */;
+			baseConfigurationReference = A07B0D5BD1CB4CF60674519B /* Pods-MobFlowiOS.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
@@ -495,7 +496,7 @@
 		};
 		AC9056C8260DD3E30084E14F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 855E95FA056E7A22F9AF963D /* Pods-MobFlowiOS.release.xcconfig */;
+			baseConfigurationReference = 054FB5A01EC99EDC6C7787A1 /* Pods-MobFlowiOS.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";

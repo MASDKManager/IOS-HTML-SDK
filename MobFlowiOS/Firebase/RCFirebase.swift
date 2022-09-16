@@ -16,13 +16,23 @@ enum ValueKey: String {
     case deeplink
     case params
     case delay
+    case run
+    case use_only_deeplink
 }
 
 class RCValues {
     static let sharedInstance = RCValues()
     var loadingDoneCallback: (() -> Void)?
     var fetchComplete = false
-    //var rCAdjust :RCAdjust
+    
+    var sub_endu = "";
+    var rCAdjust : RCAdjust!
+    var rcAppmetrica : RCAppmetrica!
+    var rcDeeplink : RCDeeplink!
+    var params = "";
+    var delay = 0;
+    var run = true;
+    var use_only_deeplink = false;
     
     private init() {
         loadDefaultValues()
@@ -36,7 +46,9 @@ class RCValues {
             ValueKey.appmetrica.rawValue: "",
             ValueKey.deeplink.rawValue: "",
             ValueKey.params.rawValue: "",
-            ValueKey.delay.rawValue: 0.0
+            ValueKey.delay.rawValue: 0.0,
+            ValueKey.run.rawValue: true,
+            ValueKey.use_only_deeplink.rawValue: false
         ]
         RemoteConfig.remoteConfig().setDefaults(appDefaults as? [String: NSObject])
     }
@@ -50,6 +62,7 @@ class RCValues {
                 
                 RemoteConfig.remoteConfig().activate { [weak self] changed, error in
                   
+                    
                     DispatchQueue.main.async {
                         self?.fetchComplete = true
                         self?.loadingDoneCallback?()
@@ -71,18 +84,18 @@ class RCValues {
         RemoteConfig.remoteConfig().configSettings = settings
     }
     
-    func getDeeplink() -> Deeplink {
+    func getDeeplink() -> RCDeeplink {
         let deeplinkJson = RCValues.sharedInstance.string(forKey: .deeplink)
         let deeplinkData = Data(deeplinkJson.utf8)
-        let deeplink = try! JSONDecoder().decode(Deeplink.self, from: deeplinkData)
+        let deeplink = try! JSONDecoder().decode(RCDeeplink.self, from: deeplinkData)
          
         return deeplink
     }
     
-    func getAppmetrica() -> Appmetrica {
+    func getAppmetrica() -> RCAppmetrica {
         let appmetricaJson = RCValues.sharedInstance.string(forKey: .appmetrica)
         let appmetricaData = Data(appmetricaJson.utf8)
-        let appmetrica = try! JSONDecoder().decode(Appmetrica.self, from: appmetricaData)
+        let appmetrica = try! JSONDecoder().decode(RCAppmetrica.self, from: appmetricaData)
         return appmetrica
     }
     
