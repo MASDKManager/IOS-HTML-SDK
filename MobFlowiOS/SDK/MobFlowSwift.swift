@@ -8,7 +8,7 @@ import YandexMobileMetrica
 public class MobiFlowSwift: NSObject
 {
     
-    let mob_sdk_version = "1.5.7"
+    let mob_sdk_version = "1.5.8"
     var isAppmetrica = false
     var isDeeplinkURL = false
     var isUnityApp = false
@@ -178,6 +178,7 @@ public class MobiFlowSwift: NSObject
             
             if (self.use_only_deeplink && self.referrerURL == "") || !self.run {
                 self.showNativeWithPermission(dic: [String : Any]())
+                return
             }
              
             startApp()
