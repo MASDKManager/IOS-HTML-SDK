@@ -111,3 +111,13 @@ func logEvent(eventName : String, log : String){
     Analytics.logEvent(eventName, parameters: parameter)
     
 }
+
+func printMobLog(description: String, value : String) {
+    
+#if DEBUG
+    print("\(description) : \(value)")
+#else
+    
+#endif
+    
+}

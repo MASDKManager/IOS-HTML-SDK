@@ -8,7 +8,7 @@ import YandexMobileMetrica
 public class MobiFlowSwift: NSObject
 {
     
-    let mob_sdk_version = "1.5.8"
+    let mob_sdk_version = "1.5.9"
     var isAppmetrica = false
     var isDeeplinkURL = false
     var isUnityApp = false
@@ -75,6 +75,17 @@ public class MobiFlowSwift: NSObject
             self.run = RCValues.sharedInstance.bool(forKey: .run)
              
             self.faid = Analytics.appInstanceID() ?? ""
+            
+            printMobLog(description: "self.isAppmetrica", value: String(self.isAppmetrica))
+            printMobLog(description: "self.appmetricaKey", value: self.appmetricaKey)
+            printMobLog(description: "self.isDeeplinkURL", value: String(self.isDeeplinkURL))
+            printMobLog(description: "self.endpoint", value: self.endpoint.description)
+            printMobLog(description: "self.params", value: self.params.description)
+            printMobLog(description: "self.delay", value: String(self.delay))
+            printMobLog(description: "self.use_only_deeplink", value: String(self.use_only_deeplink))
+            printMobLog(description: "self.run", value: String(self.run))
+            printMobLog(description: "self.faid", value: self.faid)
+            
             self.initialTrackingAndSetup()
         }else{
             self.showNativeWithPermission(dic: [String : Any]())
@@ -86,6 +97,8 @@ public class MobiFlowSwift: NSObject
         
         if self.isAppmetrica
         {
+            
+            printMobLog(description: "App Metrica initiate called with key", value: self.appmetricaKey)
             nc.addObserver(self, selector: #selector(onDataReceived), name: Notification.Name("AppMetricaDeviceIDReceived"), object: nil)
             
             let configuration = YMMYandexMetricaConfiguration.init(apiKey: self.appmetricaKey)
@@ -102,7 +115,7 @@ public class MobiFlowSwift: NSObject
         
         if self.rcAdjust.enabled
         {
-         
+            printMobLog(description: "Adjust initiate called with token", value: self.rcAdjust.appToken)
             let adjustConfig = ADJConfig(appToken: self.rcAdjust.appToken, environment: ADJEnvironmentProduction)
             
             adjustConfig?.sendInBackground = true
@@ -135,6 +148,8 @@ public class MobiFlowSwift: NSObject
         if (endpoint != "") {
             let packageName = Bundle.main.bundleIdentifier ?? ""
             let apiString = "\(endpoint.hasPrefix("http") ? endpoint : "https://" + endpoint)?package=\(packageName)"
+            
+            printMobLog(description: "fetch endpoint url", value: apiString)
             self.checkIfEndPointAvailable(endPoint: apiString)
         } else {
             self.showNativeWithPermission(dic: [:])
@@ -144,10 +159,11 @@ public class MobiFlowSwift: NSObject
     private func checkIfEndPointAvailable(endPoint: String) {
         
         if (endpoint == "") {
-            // print("no endpoint found in json")
+            printMobLog(description: "check If EndPoint Available", value: "")
             self.showNativeWithPermission(dic: [:])
         } else {
             self.endpoint = endpoint.hasPrefix("http") ? endpoint : "https://" + endpoint
+            printMobLog(description: "check If EndPoint Available", value: self.endpoint)
             DispatchQueue.main.async {
                 self.start()
             }
@@ -168,10 +184,12 @@ public class MobiFlowSwift: NSObject
      
                 if RCValues.sharedInstance.getDeeplink().adjustDeeplinkEnabled {
                     self.referrerURL = UserDefaults.standard.string(forKey: "deeplinkURL") ?? ""
+                    printMobLog(description: "RCValues getDeeplink adjustDeeplinkEnabled", value: self.referrerURL)
                 }
                 
                 if RCValues.sharedInstance.getDeeplink().dynamicLinksEnabled{
                     self.referrerURL = UserDefaults.standard.string(forKey: "dynamiclinkURL") ?? ""
+                    printMobLog(description: "RCValues getDeeplink dynamicLinksEnabled", value: self.referrerURL)
                 }
                 
             }
@@ -236,14 +254,28 @@ public class MobiFlowSwift: NSObject
     
     func createParamsURL()
     {
-       
+        
         let adjustAttributes = Adjust.attribution()?.description ?? ""
         let encodedAdjustAttributes = adjustAttributes.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
-        let encodedReferrerURL = self.referrerURL.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
+        
+        
+        let encodedwithURLHost = self.referrerURL.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
+        var encodedReferrerURL = ""
+        if encodedwithURLHost != ""
+        {
+            encodedReferrerURL = encodedwithURLHost
+            encodedReferrerURL = encodedReferrerURL.replacingOccurrences(of: "=", with: "%3D", options: .literal, range: nil)
+            encodedReferrerURL = encodedReferrerURL.replacingOccurrences(of: "&", with: "%26", options: .literal, range: nil)
+        }
         
         let idfa = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+        printMobLog(description: "GPS_ADID", value: idfa)
+        
         let idfv = UIDevice.current.identifierForVendor!.uuidString
-         
+        printMobLog(description: "Device ID", value: idfv)
+        
+        printMobLog(description: "self.params before changing macro", value: self.params.description)
+        
         let paramsQuery = self.params
                             .replacingOccurrences(of: "$adjust_campaign_name", with: Adjust.attribution()?.campaign ?? "")
                             .replacingOccurrences(of: "$idfa", with: idfa)
@@ -255,10 +287,12 @@ public class MobiFlowSwift: NSObject
                             .replacingOccurrences(of: "$click_id", with: generateUserUUID())
                             .replacingOccurrences(of: "$adjust_attribution", with: encodedAdjustAttributes)
                             .replacingOccurrences(of: "$appmetrica_device_id", with: self.AppMetricaDeviceID)
+
+        printMobLog(description: "self.params after changing macro", value: self.params.description)
         
         let customString =  self.endpoint + "/?"  + paramsQuery
         
-      //  print("generated custom string : \(customString)")
+        printMobLog(description: "create Params URL String", value: customString)
         
         self.customURL = customString
         
@@ -325,6 +359,7 @@ public class MobiFlowSwift: NSObject
     }
     
     public func showNativeWithPermission(dic: [String : Any]) {
+        printMobLog(description: "show Native With Permission", value: "")
         self.delegate?.present(dic: dic)
         requestPremission()
     }
