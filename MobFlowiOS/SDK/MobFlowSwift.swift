@@ -73,7 +73,6 @@ public class MobiFlowSwift: NSObject
             self.delay = RCValues.sharedInstance.double(forKey: .delay)
             self.use_only_deeplink = RCValues.sharedInstance.bool(forKey: .use_only_deeplink)
             self.run = RCValues.sharedInstance.bool(forKey: .run)
-             
             self.faid = Analytics.appInstanceID() ?? ""
             
             printMobLog(description: "self.isAppmetrica", value: String(self.isAppmetrica))
