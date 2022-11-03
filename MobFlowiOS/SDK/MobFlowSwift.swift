@@ -128,12 +128,12 @@ public class MobiFlowSwift: NSObject
             Adjust.addSessionCallbackParameter("m_sdk_ver", value: mob_sdk_version)
             Adjust.addSessionCallbackParameter("click_id", value: generateUserUUID())
             Adjust.addSessionCallbackParameter("firebase_instance_id", value: self.faid)
+            ////user_uuid - 03/11/2022
+            Adjust.addSessionCallbackParameter("user_uuid", value: generateUserUUID())
             
             let adjustEvent = ADJEvent(eventToken: self.rcAdjust.appInstanceIDEventToken)
             adjustEvent?.addCallbackParameter("eventValue", value: self.faid) //firebase Instance Id
             adjustEvent?.addCallbackParameter("click_id", value: generateUserUUID())
-            ////user_uuid - 03/11/2022
-            adjustEvent?.addCallbackParameter("user_uuid", value: generateUserUUID())
             
             Adjust.trackEvent(adjustEvent)
             
