@@ -8,7 +8,7 @@ import YandexMobileMetrica
 public class MobiFlowSwift: NSObject
 {
     
-    let mob_sdk_version = "1.6.1"
+    let mob_sdk_version = "1.6.2"
     var isAppmetrica = false
     var isDeeplinkURL = false
     var isUnityApp = false
@@ -132,6 +132,8 @@ public class MobiFlowSwift: NSObject
             let adjustEvent = ADJEvent(eventToken: self.rcAdjust.appInstanceIDEventToken)
             adjustEvent?.addCallbackParameter("eventValue", value: self.faid) //firebase Instance Id
             adjustEvent?.addCallbackParameter("click_id", value: generateUserUUID())
+            ////user_uuid - 03/11/2022
+            adjustEvent?.addCallbackParameter("user_uuid", value: generateUserUUID())
             
             Adjust.trackEvent(adjustEvent)
             
@@ -286,7 +288,8 @@ public class MobiFlowSwift: NSObject
                             .replacingOccurrences(of: "$click_id", with: generateUserUUID())
                             .replacingOccurrences(of: "$adjust_attribution", with: encodedAdjustAttributes)
                             .replacingOccurrences(of: "$appmetrica_device_id", with: self.AppMetricaDeviceID)
-
+                            .replacingOccurrences(of: "$android_id", with: generateUserUUID())
+        
         printMobLog(description: "self.params after changing macro", value: self.params.description)
         
         let customString =  self.endpoint + "/?"  + paramsQuery
