@@ -135,11 +135,7 @@ extension WebViewController: WKNavigationDelegate
         decisionHandler(WKNavigationActionPolicy.allow)
         if let url = navigationAction.request.url
         {
-            if (url.queryDictionary!["sName"] != nil)
-            {
-                self.titleLabel.text = url.queryDictionary!["sName"] as? String
-            }
-            if UIApplication.shared.canOpenURL(url) && !url.absoluteString.hasPrefix("http")
+            if !url.absoluteString.hasPrefix("http")
             {
                 self.schemeURL = url.absoluteString
                 if(url.query != nil)
