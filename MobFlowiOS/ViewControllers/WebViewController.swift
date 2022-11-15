@@ -135,7 +135,8 @@ extension WebViewController: WKNavigationDelegate
         decisionHandler(WKNavigationActionPolicy.allow)
         if let url = navigationAction.request.url
         {
-            if !url.absoluteString.hasPrefix("http")
+            printMobLog(description: "------------------------------ absolute string :", value: url.absoluteURL)
+            if !url.absoluteString.hasPrefix("http") &&  ( url.absoluteString.contains("://") || UIApplication.shared.canOpenURL(url))
             {
                 self.schemeURL = url.absoluteString
                 if(url.query != nil)
