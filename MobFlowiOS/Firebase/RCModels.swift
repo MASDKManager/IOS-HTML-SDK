@@ -24,5 +24,15 @@ struct RCAdjust : Codable {
     let enabled: Bool
     let appToken: String
     let appInstanceIDEventToken: String
+    let attrLogEventToken: String
     let callbackDelay: Int
+    let sdk_signature: String
+}
+
+struct RCSdkSignature : Codable {
+    let secretID : UInt
+    let info1 : UInt
+    let info2 : UInt
+    let info3 : UInt
+    let info4 : UInt
 }

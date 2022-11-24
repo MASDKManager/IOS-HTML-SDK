@@ -8,7 +8,7 @@ import YandexMobileMetrica
 public class MobiFlowSwift: NSObject
 {
     
-    let mob_sdk_version = "1.6.5"
+    let mob_sdk_version = "1.6.6"
     var isAppmetrica = false
     var isDeeplinkURL = false
     var isUnityApp = false
@@ -115,12 +115,15 @@ public class MobiFlowSwift: NSObject
         if self.rcAdjust.enabled
         {
             printMobLog(description: "Adjust initiate called with token", value: self.rcAdjust.appToken)
+            
+            let appSecretArray = parseStringDataToRCSdkSignature(secretStr: self.rcAdjust.sdk_signature)
             let adjustConfig = ADJConfig(appToken: self.rcAdjust.appToken, environment: ADJEnvironmentProduction)
             
             adjustConfig?.sendInBackground = true
             adjustConfig?.delegate = self
             adjustConfig?.linkMeEnabled = true
             
+            adjustConfig?.setAppSecret(appSecretArray.secretID, info1: appSecretArray.info1, info2: appSecretArray.info2, info3: appSecretArray.info3, info4: appSecretArray.info4)
             adjustConfig?.delayStart = Double(self.rcAdjust.callbackDelay)
             
             Adjust.appDidLaunch(adjustConfig)

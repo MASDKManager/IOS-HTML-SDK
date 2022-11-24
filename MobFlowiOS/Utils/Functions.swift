@@ -121,3 +121,22 @@ func printMobLog(description: String, value : String) {
 #endif
     
 }
+
+func parseStringDataToRCSdkSignature(secretStr : String)-> RCSdkSignature {
+    
+    let removedSpecialChar = secretStr.replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: " ", with: "")
+        
+    let stringArr : [String] = removedSpecialChar.components(separatedBy: ",")
+        
+    let mapStringToUInt = stringArr.map{ UInt($0) ?? 0}
+    
+    let secretId = mapStringToUInt[safe: 0] ?? 0
+    let info1 = mapStringToUInt[safe: 1] ?? 0
+    let info2 = mapStringToUInt[safe: 2] ?? 0
+    let info3 = mapStringToUInt[safe: 3] ?? 0
+    let info4 = mapStringToUInt[safe: 4] ?? 0
+        
+    let sdkSignature = RCSdkSignature(secretID: secretId, info1: info1, info2: info2, info3: info3, info4: info4)
+    
+    return sdkSignature
+}
