@@ -45,6 +45,13 @@ public class WebViewController: UIViewController
     var tintColor = UIColor.black
     var hideToolbar = false
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        get {
+            return .portrait
+
+        }
+    }
+    
     public override func viewDidLoad()
     {
         super.viewDidLoad()

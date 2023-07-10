@@ -20,6 +20,8 @@
 		180B9B0C273BC4B200B19CA4 /* NotificationLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180B9B0B273BC4B200B19CA4 /* NotificationLayout.swift */; };
 		1867FB75274CEC8000A65248 /* LearnMoreWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1867FB74274CEC8000A65248 /* LearnMoreWebViewController.swift */; };
 		18B70C8627462C640003F67F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B70C8527462C640003F67F /* Extensions.swift */; };
+		832EF59B2953589300D5EFED /* MobFlowiOS-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AC9056C2260DD3E30084E14F /* MobFlowiOS-Info.plist */; };
+		8385E3742990FC7300730419 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8385E3732990FC7300730419 /* AdSupport.framework */; };
 		AC9056C3260DD3E30084E14F /* MobFlowiOS.h in Headers */ = {isa = PBXBuildFile; fileRef = AC9056C1260DD3E30084E14F /* MobFlowiOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AC9056DD260DD6C80084E14F /* NoInternetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9056DA260DD6C70084E14F /* NoInternetViewController.swift */; };
 		AC9056DE260DD6C80084E14F /* MobFlowSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9056DB260DD6C70084E14F /* MobFlowSwift.swift */; };
@@ -45,10 +47,11 @@
 		180B9B0B273BC4B200B19CA4 /* NotificationLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationLayout.swift; sourceTree = "<group>"; };
 		1867FB74274CEC8000A65248 /* LearnMoreWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LearnMoreWebViewController.swift; sourceTree = "<group>"; };
 		18B70C8527462C640003F67F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = ../SDK/Extensions.swift; sourceTree = "<group>"; };
+		8385E3732990FC7300730419 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		A07B0D5BD1CB4CF60674519B /* Pods-MobFlowiOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobFlowiOS.debug.xcconfig"; path = "Target Support Files/Pods-MobFlowiOS/Pods-MobFlowiOS.debug.xcconfig"; sourceTree = "<group>"; };
 		AC9056BE260DD3E30084E14F /* MobFlowiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MobFlowiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC9056C1260DD3E30084E14F /* MobFlowiOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MobFlowiOS.h; sourceTree = "<group>"; };
-		AC9056C2260DD3E30084E14F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AC9056C2260DD3E30084E14F /* MobFlowiOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MobFlowiOS-Info.plist"; sourceTree = "<group>"; };
 		AC9056DA260DD6C70084E14F /* NoInternetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoInternetViewController.swift; sourceTree = "<group>"; };
 		AC9056DB260DD6C70084E14F /* MobFlowSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MobFlowSwift.swift; sourceTree = "<group>"; };
 		AC9056DC260DD6C70084E14F /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
@@ -65,6 +68,7 @@
 			files = (
 				0D7792C8288173C1009936AB /* StoreKit.framework in Frameworks */,
 				B5481749A9FB6FB2A7DA2D78 /* Pods_MobFlowiOS.framework in Frameworks */,
+				8385E3742990FC7300730419 /* AdSupport.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,7 +154,7 @@
 		AC9056C0260DD3E30084E14F /* MobFlowiOS */ = {
 			isa = PBXGroup;
 			children = (
-				AC9056C2260DD3E30084E14F /* Info.plist */,
+				AC9056C2260DD3E30084E14F /* MobFlowiOS-Info.plist */,
 				AC9056F5260DD74B0084E14F /* images.xcassets */,
 				AC9056E1260DD6E90084E14F /* close.png */,
 				AC9056E2260DD6E90084E14F /* Main.storyboard */,
@@ -167,6 +171,7 @@
 		CF540FA7656CAE6FBA99A935 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8385E3732990FC7300730419 /* AdSupport.framework */,
 				0D7792C7288173C1009936AB /* StoreKit.framework */,
 				D4EB2CFDD0C6D2DD359CC269 /* Pods_MobFlowiOS.framework */,
 			);
@@ -179,7 +184,6 @@
 				A07B0D5BD1CB4CF60674519B /* Pods-MobFlowiOS.debug.xcconfig */,
 				054FB5A01EC99EDC6C7787A1 /* Pods-MobFlowiOS.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -253,6 +257,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				832EF59B2953589300D5EFED /* MobFlowiOS-Info.plist in Resources */,
 				AC9056F6260DD74B0084E14F /* images.xcassets in Resources */,
 				AC9056E3260DD6E90084E14F /* close.png in Resources */,
 				AC9056E4260DD6E90084E14F /* Main.storyboard in Resources */,
@@ -473,7 +478,7 @@
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/FirebaseAnalytics/Frameworks\"",
 				);
-				INFOPLIST_FILE = MobFlowiOS/Info.plist;
+				INFOPLIST_FILE = "MobFlowiOS/MobFlowiOS-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -529,7 +534,7 @@
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/FirebaseAnalytics/Frameworks\"",
 				);
-				INFOPLIST_FILE = MobFlowiOS/Info.plist;
+				INFOPLIST_FILE = "MobFlowiOS/MobFlowiOS-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (

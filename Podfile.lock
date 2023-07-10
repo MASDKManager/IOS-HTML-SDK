@@ -2,6 +2,7 @@ PODS:
   - Adjust (4.32.0):
     - Adjust/Core (= 4.32.0)
   - Adjust/Core (4.32.0)
+  - AffiseAttributionLib (1.1.6)
   - Firebase (9.6.0):
     - Firebase/Core (= 9.6.0)
   - Firebase/Core (9.6.0):
@@ -120,6 +121,7 @@ PODS:
 
 DEPENDENCIES:
   - Adjust
+  - AffiseAttributionLib (~> 1.1.6)
   - Firebase
   - FirebaseAnalytics
   - FirebaseCrashlytics
@@ -131,6 +133,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Adjust
+    - AffiseAttributionLib
     - Firebase
     - FirebaseABTesting
     - FirebaseAnalytics
@@ -151,6 +154,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Adjust: d537f6d943f536d801ff8d07a971461539ce1fc5
+  AffiseAttributionLib: 1c70a5c1a346c4960acb2d100c34e485e0ad88fb
   Firebase: 5ae8b7cf8efce559a653aef0ad95bab3f427c351
   FirebaseABTesting: 61826730ce9eee8781ba99a2b3420e9bce148dc9
   FirebaseAnalytics: 89ad762c6c3852a685794174757e2c60a36b6a82
@@ -169,6 +173,6 @@ SPEC CHECKSUMS:
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   YandexMobileMetrica: f5f9c605eaaba33ff6ab2b6bc3259035ca60ed87
 
-PODFILE CHECKSUM: 74ecf5c1add15bf680ab9bd95715b59104ed99a3
+PODFILE CHECKSUM: 589fa61f4af0820b9ffdb04cb3e1ede9b80af5b9
 
 COCOAPODS: 1.11.3

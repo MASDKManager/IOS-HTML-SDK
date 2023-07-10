@@ -4,11 +4,13 @@ import AdSupport
 import FirebaseCore
 import FirebaseAnalytics
 import YandexMobileMetrica
- 
+import AffiseAttributionLib
+
 public class MobiFlowSwift: NSObject
 {
     
     let mob_sdk_version = "1.6.6"
+    var isAffise = false
     var isAppmetrica = false
     var isDeeplinkURL = false
     var isUnityApp = false
@@ -93,6 +95,11 @@ public class MobiFlowSwift: NSObject
     
     
     private func initialTrackingAndSetup() {
+        
+        if self.isAffise
+        {
+            let properties = AffiseInitProperties(affiseAppId: "237", secretId: "c94894de-596e-42d9-8c5b-ffc5c88fb7c0")
+        }
         
         if self.isAppmetrica
         {
