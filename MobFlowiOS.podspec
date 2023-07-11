@@ -28,6 +28,7 @@ Pod::Spec.new do |spec|
   spec.dependency 'FirebaseRemoteConfig'
   spec.dependency 'FirebaseDynamicLinks'
   spec.dependency 'YandexMobileMetrica/Dynamic', '~> 4.2.0'
+  spec.dependency 'TikTokBusinessSDK'
   spec.source_files  = "MobFlowiOS/**/*.{h,m,swift}"
   spec.resource_bundles = {
     'MobFlowiOS' => ['MobFlowiOS/**/*.{storyboard,xib,xcassets,lproj,png}']
