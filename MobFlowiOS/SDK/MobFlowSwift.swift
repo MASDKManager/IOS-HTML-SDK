@@ -4,16 +4,19 @@ import AdSupport
 import FirebaseCore
 import FirebaseAnalytics
 import YandexMobileMetrica
- 
+import TikTokBusinessSDK
+
 public class MobiFlowSwift: NSObject
 {
     
-    let mob_sdk_version = "1.6.6"
+    let mob_sdk_version = "1.6.7"
     var isAppmetrica = false
     var isDeeplinkURL = false
     var isUnityApp = false
     var endpoint = ""
     var rcAdjust : RCAdjust!
+    var rcTikTok : RCTikTok!
+    var rcTiktok = true
     var appmetricaKey = ""
     var referrerURL = ""
     var customURL = ""
@@ -138,6 +141,36 @@ public class MobiFlowSwift: NSObject
             
             Adjust.trackEvent(adjustEvent)
             
+        }
+        
+        if rcTiktok {
+            //            let config = TikTokConfig.init(appId: "6450348303", tiktokAppId: 7254098070454093829)
+            
+            let config = TikTokConfig.init(accessToken: rcTikTok.accessToken, appId: rcTikTok.appId, tiktokAppId: rcTikTok.tiktokAppId)
+            config?.setLogLevel(TikTokLogLevelVerbose)
+            TikTokBusiness.initializeSdk(config)
+            
+            let tiktokCallbackProperties : [AnyHashable : Any] = [
+                "m_sdk_ver" : mob_sdk_version,
+                "user_uuid" : generateUserUUID(),
+                "firebase_instance_id" : self.faid
+            ]
+            printMobLog(description: "tiktokCallbackProperties:", value: tiktokCallbackProperties.description)
+            
+            print("hello tiktok info");
+            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).appId)
+            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).appName)
+            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).appNamespace)
+            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).appVersion)
+            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).appBuild)
+            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).devicePlatform);
+            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).deviceIdForAdvertisers);
+            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).deviceVendorId);
+            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).localeInfo);
+            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).userAgent);
+            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).ipInfo);
+            
+            TikTokBusiness.trackEvent(rcTikTok.eventName, withProperties:tiktokCallbackProperties)
         }
         
         if !self.isAppmetrica

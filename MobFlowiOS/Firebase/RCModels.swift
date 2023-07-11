@@ -29,6 +29,16 @@ struct RCAdjust : Codable {
     let sdk_signature: String
 }
 
+// MARK: - RCTikTok
+struct RCTikTok : Codable {
+    let enabled: Bool
+    let accessToken: String
+    let appId: String
+    let tiktokAppId: NSNumber
+    let sdkPrefix: String
+    let eventName: String
+}
+
 struct RCSdkSignature : Codable {
     let secretID : UInt
     let info1 : UInt
