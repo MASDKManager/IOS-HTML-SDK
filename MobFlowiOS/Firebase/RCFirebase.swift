@@ -18,6 +18,7 @@ enum ValueKey: String {
     case delay
     case run
     case use_only_deeplink
+    case tiktok
 }
 
 class RCValues {
@@ -27,6 +28,7 @@ class RCValues {
     
     var sub_endu = "";
     var rCAdjust : RCAdjust!
+    var rCTikTok : RCTikTok!
     var rcAppmetrica : RCAppmetrica!
     var rcDeeplink : RCDeeplink!
     var params = "";
@@ -107,6 +109,14 @@ class RCValues {
         return rCAdjust
     }
      
+    func getTikTok() -> RCTikTok {
+        let rCTikTokJson = RCValues.sharedInstance.string(forKey: .tiktok)
+        let rCTikTokData = Data(rCTikTokJson.utf8)
+        let rCTikTok = try! JSONDecoder().decode(RCTikTok.self, from: rCTikTokData)
+        
+        return rCTikTok
+    }
+    
     func bool(forKey key: ValueKey) -> Bool {
         RemoteConfig.remoteConfig()[key.rawValue].boolValue
     }

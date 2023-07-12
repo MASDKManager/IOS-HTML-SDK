@@ -9,7 +9,7 @@ import TikTokBusinessSDK
 public class MobiFlowSwift: NSObject
 {
     
-    let mob_sdk_version = "1.6.7"
+    let mob_sdk_version = "1.6.8"
     var isAppmetrica = false
     var isDeeplinkURL = false
     var isUnityApp = false
@@ -144,9 +144,9 @@ public class MobiFlowSwift: NSObject
         }
         
         if rcTiktok {
-            //            let config = TikTokConfig.init(appId: "6450348303", tiktokAppId: 7254098070454093829)
             
-            let config = TikTokConfig.init(accessToken: rcTikTok.accessToken, appId: rcTikTok.appId, tiktokAppId: rcTikTok.tiktokAppId)
+            let tiktokID = NSNumber(value:Int(rcTikTok.tiktokAppId) ?? 0)
+            let config = TikTokConfig.init(accessToken: rcTikTok.accessToken, appId: rcTikTok.appId, tiktokAppId: tiktokID)
             config?.setLogLevel(TikTokLogLevelVerbose)
             TikTokBusiness.initializeSdk(config)
             
@@ -156,19 +156,6 @@ public class MobiFlowSwift: NSObject
                 "firebase_instance_id" : self.faid
             ]
             printMobLog(description: "tiktokCallbackProperties:", value: tiktokCallbackProperties.description)
-            
-            print("hello tiktok info");
-            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).appId)
-            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).appName)
-            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).appNamespace)
-            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).appVersion)
-            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).appBuild)
-            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).devicePlatform);
-            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).deviceIdForAdvertisers);
-            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).deviceVendorId);
-            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).localeInfo);
-            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).userAgent);
-            print(TikTokDeviceInfo.init(sdkPrefix: rcTikTok.sdkPrefix).ipInfo);
             
             TikTokBusiness.trackEvent(rcTikTok.eventName, withProperties:tiktokCallbackProperties)
         }

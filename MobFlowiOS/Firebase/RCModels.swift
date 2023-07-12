@@ -34,7 +34,7 @@ struct RCTikTok : Codable {
     let enabled: Bool
     let accessToken: String
     let appId: String
-    let tiktokAppId: NSNumber
+    let tiktokAppId: String
     let sdkPrefix: String
     let eventName: String
 }
