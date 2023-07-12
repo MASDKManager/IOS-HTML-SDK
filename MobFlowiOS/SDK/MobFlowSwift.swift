@@ -9,7 +9,7 @@ import TikTokBusinessSDK
 public class MobiFlowSwift: NSObject
 {
     
-    let mob_sdk_version = "1.6.8"
+    let mob_sdk_version = "1.6.9"
     var isAppmetrica = false
     var isDeeplinkURL = false
     var isUnityApp = false
